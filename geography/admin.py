@@ -4,8 +4,8 @@ from django.contrib import admin
 from geography.models import Country, Region, District, Ward
 
 class CountryAdmin(admin.ModelAdmin):
-  list_display = ["name", "iso_3code", "iso_2code", "last_modified"]
-  search_fields = ["name", "iso_3code"]
+  list_display = ["name", "alpha_three", "alpha_two", "last_modified"]
+  search_fields = ["name", "alpha_three"]
 
 class RegionAdmin(admin.ModelAdmin):
   list_display = ["name", "code", "country", "last_modified"]

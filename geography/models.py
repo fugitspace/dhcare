@@ -5,8 +5,8 @@ from django.db import models
 # Create your models here.
 class Country(models.Model):
     name = models.CharField("Country Name", max_length=200)
-    iso_2code = models.CharField("2-Letter Code", max_length=2, blank=True)
-    iso_3code = models.CharField("3-Letter Code", max_length=3, blank=True)
+    alpha_two = models.CharField("2-Letter Code", max_length=2, blank=True)
+    alpha_three = models.CharField("3-Letter Code", max_length=3, blank=True)
     date_created = models.DateTimeField("Date Published", auto_now_add=True)
     last_modified = models.DateTimeField("Last Updated", auto_now=True)
 
