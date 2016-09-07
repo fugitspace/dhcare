@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'patient',
     'geography',
+    'person',
 ]
 
 MIDDLEWARE_CLASSES = [

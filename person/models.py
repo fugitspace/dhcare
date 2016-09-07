@@ -3,6 +3,26 @@ from __future__ import unicode_literals
 from django.db import models
 
 # Create your models here.
+
+    
+class Gender(models.Model):
+    name = models.CharField("Gender Name", blank=True, max_length=200)
+
+class MaritalStatus(models.Model):
+    name = models.CharField("Status", max_length=200)
+    date_created = models.DateTimeField(auto_now_add = True)
+    last_modified = models.DateTimeField(auto_now = True)
+    
+class Religion(models.Model):
+    name = models.CharField("Religion Name", max_length=200)
+    date_created = models.DateTimeField(auto_now_add = True)
+    last_modified = models.DateTimeField(auto_now = True)
+
+class Prefix(models.Model):
+    name = models.CharField("Prefix Name", max_length=200)
+    last_modified = models.DateTimeField(auto_now = True)
+
+    
 class Person(models.Model):
     surname = models.CharField("Surname", max_length=200)
     firstname = models.CharField("Firstname", max_length=200)
@@ -30,17 +50,3 @@ class PersonContact(models.Model):
     telephone = models.CharField("Telephone", blank=True, max_length=200)
     alt_mobile = models.CharField("Alternate Mobile Number", blank=True, max_length=200)
     email = models.EmailField(blank=True)
-
-    
-class Gender(models.Model):
-    name = models.CharField("Gender Name", blank=True, max_length=200)
-
-class MaritalStatus(models.Model):
-    name = models.CharField("Status", max_length=200)
-    date_created = models.DateTimeField(auto_now_add = True)
-    last_modified = models.DateTimeField(auto_now = True)
-    
-class Religion(models.Model):
-    name = models.CharField("Religion Name", max_length=200)
-    date_created = models.DateTimeField(auto_now_add = True)
-    last_modified = models.DateTimeField(auto_now = True)
