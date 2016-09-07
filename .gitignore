@@ -1,0 +1,8 @@
+*.pyc
+*.sw?
+doc/time.txt
+bin/
+include/
+lib/
+local/
+pip-selfcheck.json
