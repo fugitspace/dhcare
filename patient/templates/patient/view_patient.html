@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block sitehead %}
+<title>dcare: Patient Management</title>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Patient Information
+  </div>
+  <!--<div class="panel-body">
+    <h2>{{patient.firstname}} {{patient.othername}}</h2>
+  </div>-->
+  <table class="table">
+    <tbody>
+      <tr><th>Prefix:</th><td>{{ patient.prefix }}</td><td rowspan="3"><img src="" alt="{{ patient.surname}} {{ patient.firstname}}"/></td></tr>
+      <tr><th>Surname:</th><td>{{ patient.surname }}</td></tr>
+      <tr><th>Surname:</th><td>{{ patient.firstname }}</td></tr>
+      <tr><th>Surname:</th><td>{{ patient.othername }}</td><td>{{ patient.surname }}</td></tr>      
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
+
+
+{% block right_menu %}
+
+<div>&nbsp;</div>
+<ul class="list-group">
+  <li class="list-group-item">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Patient Search">
+      <span class="input-group-btn">
+	<button class="btn btn-default" type="button"><span title="Find" class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+      </span>
+    </div>
+    <div>&nbsp;</div>
+  </li>
+  
+  <li class="list-group-item"><a href="{% url 'patient:create_patient'%}">Register new patient</a></li>
+  <li class="list-group-item"><a href="#">Admission</a></li>
+</ul>
+{% endblock %}
+

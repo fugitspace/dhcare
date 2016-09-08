@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^create/$', views.create_patient, name='create_patient'),
     url(r'^view/(?P<patient_id>[0-9]+)/$', views.view_patient, name='view_patient'),
+    url(r'^edit/(?P<patient_id>[0-9]+)/$', views.edit_patient, name='edit_patient'),
 ]

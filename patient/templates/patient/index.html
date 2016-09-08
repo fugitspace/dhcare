@@ -28,12 +28,12 @@
 	<td> {{ patient.surname }} </td>
 	<td> {{ patient.othername }}</td>
 	<td>
-	  <a href="{% url 'patient:home' %}">
+	  <a href="{% url 'patient:view_patient' patient.id %}">
 	    <span title="View" class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 	  </a>
 	</td>
 	<td>
-	  <a href="{% url 'patient:home' %}">
+	  <a href="{% url 'patient:edit_patient' patient.id%}">
 	    <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 	  </a>
 	</td>
