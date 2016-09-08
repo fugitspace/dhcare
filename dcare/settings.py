@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT_URL = 'patient/'
+LOGIN_URL = 'login/'
 
 # Application definition
 

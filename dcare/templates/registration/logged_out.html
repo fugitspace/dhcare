@@ -22,19 +22,9 @@
   </head>
 
   <body>
-    <div class="jumbotron">
-      <h1 class="dcare-brand"><img src="{% static 'dcare/img/dcare.png' %}" alt="dcare: hospital management" /></h1>
-      <h1><small>dcare: Hospital Management</small></h1>
-      <h3>Simplicity, Productivity, Efficiency</h3>
-    </div>
     <div class="container-fluid">
-      <div class="row">
-	<p><a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Click here to Login</a></p>
-      </div>
-      <div class="row">
-	<div class="col-xs-9 col-md-6">Clinical, Laboratory, Admissions, etc</div>
-	<div class="col-xs-9 col-md-6">Text There</div>
-      </div>
+      <h1>You are logged out!</h1>
+      <h3>Click <a href="{% url 'login' %}" >here</a> to go to login page!</h3>
     </div>
 <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
 

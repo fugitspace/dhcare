@@ -22,19 +22,25 @@
   </head>
 
   <body>
-    <div class="jumbotron">
-      <h1 class="dcare-brand"><img src="{% static 'dcare/img/dcare.png' %}" alt="dcare: hospital management" /></h1>
-      <h1><small>dcare: Hospital Management</small></h1>
-      <h3>Simplicity, Productivity, Efficiency</h3>
-    </div>
-    <div class="container-fluid">
-      <div class="row">
-	<p><a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Click here to Login</a></p>
-      </div>
-      <div class="row">
-	<div class="col-xs-9 col-md-6">Clinical, Laboratory, Admissions, etc</div>
-	<div class="col-xs-9 col-md-6">Text There</div>
-      </div>
+    <div class="container-fluid">      
+      <form class="form-signin" method="POST" action="{% url 'django.contrib.auth.views.login' %}">
+	{% csrf_token %}
+	<h2 class="form-signin-heading">Please sign in</h2>
+	{% if form.errors %}
+	<div class="alert alert-danger" role="alert">Invalid username and/or password</div>
+	{% endif %}	
+	<label for="inputUsername" class="sr-only">Username</label>
+	<input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+	<label for="inputPassword" class="sr-only">Password</label>
+	<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+	<!--<div class="checkbox">
+	  <label>
+	    <input type="checkbox" value="remember-me"> Remember me
+	  </label>
+	</div>-->
+	<input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in" />
+	<input type="hidden" name="next" value="{{ next }}" />
+      </form>           
     </div>
 <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
 

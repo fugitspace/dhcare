@@ -10,6 +10,13 @@ class Country(models.Model):
     date_created = models.DateTimeField("Date Published", auto_now_add=True)
     last_modified = models.DateTimeField("Last Updated", auto_now=True)
 
+    def __str__(self):
+        return "{} - {}".format(self.name, self.alpha_two)
+
+    class Meta:
+        verbose_name_plural = 'Countries'
+
+        
 class Region(models.Model):
     name = models.CharField("Region Name", max_length=200)
     code = models.CharField("Abbreviation", max_length=200, blank=True)

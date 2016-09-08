@@ -6,6 +6,10 @@ from django.shortcuts import render
 
 # Create your views here.
 def home(request):
+    return render(request, 'patient/index.html')
+
+
+def to_login(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username, password=password)

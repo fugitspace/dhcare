@@ -6,11 +6,14 @@ from geography.models import Country, Region, District, Ward
 class CountryAdmin(admin.ModelAdmin):
   list_display = ["name", "alpha_three", "alpha_two", "last_modified"]
   search_fields = ["name", "alpha_three"]
-
+  ordering = ['-name']
+  
 class RegionAdmin(admin.ModelAdmin):
   list_display = ["name", "code", "country", "last_modified"]
   search_fields = ["name"]
-
+  list_filter = ['country']
+  ordering = ['name']
+  
 class DistrictAdmin(admin.ModelAdmin):
   list_display = ["name", "code", "last_modified"]
   search_fields = ["name", "code"]
