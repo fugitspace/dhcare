@@ -23,6 +23,7 @@
   </head>
 
   <body>
+    {% block sitenav %}
     <nav class="navbar navbar-default">      
       <div class="container-fluid">
 	<div class="navbar-header navbar-right">
@@ -36,7 +37,7 @@
 	</div>
       </div>
     </nav>
-    
+    {% endblock %}
     <div class="container-fluid">
       {% block sitepage %}
       <div class="row">
