@@ -1,0 +1,72 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Hospital Management Information System">
+    <meta name="author" content="Sovello Hildebrand Mgani">
+    <link rel="icon" href="{% static 'dcare/img/favicon.ico' %}">
+    {% block sitehead %}
+    <title>dcare: Hospital Management</title>
+    {% endblock %}
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="{% static 'dcare/css/bootstrap.min.css' %}">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="{% static 'dcare/css/bootstrap-theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dcare/css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dcare/css/styles.css' %}" />    
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default">      
+      <div class="container-fluid">
+	<div class="navbar-header navbar-right">
+	  <div class="navbar-header">
+	    {%  if user.is_authenticated %}
+	    <p class="navbar-text navbar-right"><span class="nav-text">Signed in as <strong>{{ user.username }}</strong> / </span><a href="{% url 'logout' %}" class="navbar-link"><span class="nav-text"><small>LOGOUT</small></span></a>  </p>
+	    {% else %}
+	    <p class="navbar-text navbar-right"><a href="{% url 'login' %}" class="navbar-link">LOGIN</a></p>
+	    {% endif %}
+	  </div>
+	</div>
+      </div>
+    </nav>
+    
+    <div class="container-fluid">
+      {% block sitepage %}
+      <div class="row">
+	<div class="col-xs-5 col-md-3">
+	  {% block left_menu %}
+
+	  
+	  {% endblock %}
+	</div>
+	
+	<div class="col-xs-8 col-md-6">
+	  {% block content %}
+	  
+	  {% endblock %}
+	</div>
+	<div class="col-xs-5 col-md-3">
+	  {% block right_menu %}
+	  
+	  {% endblock %}
+	</div>
+      </div>
+      {% endblock %}
+    </div>
+    <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
+
+  <script src="{% static 'dcare/js/jquery.min.js' %}"></script>
+  <script src="{% static 'dcare/js/circle-progress.js' %}"></script>
+  <script src="{% static 'dcare/js/hnp_stats.js' %}"></script>
+  <script src="{% static 'dcare/js/jquery-ui.js' %}"></script>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="{% static 'dcare/js/bootstrap.min.js' %}"></script>  
+</body>
+</html>

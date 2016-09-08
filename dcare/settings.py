@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_REDIRECT_URL = 'patient/'
+LOGIN_REDIRECT_URL = '/patient/'
 LOGIN_URL = 'login/'
 
 # Application definition
@@ -118,7 +118,7 @@ USE_TZ = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'dcare/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'dcare/templates'), os.path.join(BASE_DIR, 'templates') ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
