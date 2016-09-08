@@ -87,6 +87,7 @@ class PersonContact(models.Model):
     telephone = models.CharField("Telephone", blank=True, max_length=200)
     alt_mobile = models.CharField("Alternate Mobile Number", blank=True, max_length=200)
     email = models.EmailField(blank=True)
-
+    mailing_address = models.TextField("Mailing Address", blank=True, max_length=200)
+    
     def __str__(self):
         return "{}".format(self.person)
