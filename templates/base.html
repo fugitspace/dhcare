@@ -42,9 +42,29 @@
       {% block sitepage %}
       <div class="row">
 	<div class="col-xs-5 col-md-3">
-	  {% block left_menu %}
-
-	  
+	  {% block left_menu %}	  
+	  <div class="list-group">
+	    <a href="{% url 'patient:home' %}"
+	       {% if 'patient' in request.path %} class="list-group-item active" {% else %} class="list-group-item" {% endif %} >
+	      Patient
+	    </a>
+	    <a href="{% url 'appointment:home' %}"
+	      {% if 'appointment' in request.path %} class="list-group-item active" {% else %} class="list-group-item" {% endif %} >
+	      Appointments
+	    </a>
+	    <a href="{% url 'laboratory:home' %}"
+	       {% if 'laboratory' in request.path %} class="list-group-item active" {% else %} class="list-group-item" {% endif %} >
+	      Laboratory
+	    </a>
+	    <a href="{% url 'radiology:home' %}"
+	      {% if 'radiology' in request.path %} class="list-group-item active" {% else %} class="list-group-item" {% endif %} >
+	      Radiology
+	    </a>
+	    <a href="{% url 'pharmacy:home' %}"
+	       {% if 'pharmacy' in request.path %} class="list-group-item active" {% else %} class="list-group-item" {% endif %} >
+	      Pharmacy
+	    </a>
+	  </div>
 	  {% endblock %}
 	</div>
 	

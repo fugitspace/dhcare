@@ -1,4 +1,4 @@
-"""patient URL Configuration
+"""appointment URL Configuration
 
 Examples:
 Function views
@@ -13,9 +13,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from patient import views
+from radiology import views
 
-app_name = 'patient'
+app_name = 'radiology'
 urlpatterns = [
     url(r'^$', views.home, name='home')
 ]

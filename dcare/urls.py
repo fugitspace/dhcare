@@ -23,5 +23,9 @@ urlpatterns = [
     url(r'^$', views.index, name='home'),
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
-    url(r'^patient/', include('patient.urls'))
+    url(r'^patient/', include('patient.urls')),
+    url(r'^appointment/', include('appointment.urls')),
+    url(r'^laboratory/', include('laboratory.urls')),
+    url(r'^radiology/', include('radiology.urls')),
+    url(r'^pharmacy/', include('pharmacy.urls'))    
 ]

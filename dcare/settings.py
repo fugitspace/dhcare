@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'patient',
     'geography',
     'person',
+    'appointment',
+    'laboratory',
+    'pharmacy',
+    'radiology',
 ]
 
 MIDDLEWARE_CLASSES = [

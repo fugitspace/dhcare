@@ -15,7 +15,15 @@ nav {
 }
 
 .nav-text {
-    color:#4F99CB;
+    color:#4f99cb;
+}
+
+.list-group {
+    text-align: left;
+}
+
+.list-group-item .active {
+    background-color:#4f99cb;
 }
 
 .form-signin {
