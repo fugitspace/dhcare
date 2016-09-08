@@ -7,6 +7,11 @@ from person.models import Prefix
 
 # Create your views here.
 def home(request):
+    recently_added = Patient.objects.order_by('-date_created')[:5]        
+    return render(request, 'patient/index.html', {'recently_added':recently_added})
+
+
+def create_patient(request):
     if request.method == 'POST':
         form = PersonForm(request.POST)
         if form.is_valid():
@@ -21,22 +26,12 @@ def home(request):
             return HttpResponseRedirect('/patient/')
     else:
         form = PersonForm()
-        recently_added = Patient.objects.order_by('-date_created')[:5]
         
-    return render(request, 'patient/index.html', {'form':form, 'recently_added':recently_added})
+    return render(request, 'patient/create_patient.html', {'form':form})    
 
 
-def to_login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            return render(request, 'patient/index.html')
-        else:
-            message = "Your account is inactive! Contact your Administrator"
-            return render(request, 'dcare/index.html', {'error_message': message})
-    else:
-        message = "Invalid username and/or password"
-        return render(request, 'dcare/index.html', {'error_message': message})
+def view_patient(request):
+    patient_id = request.GET['patient_id']
+    patient = Patient.objects.get(id = patient_id)
+    
+    return render(request, 'patient/view_patient.html', {'patient':patient})

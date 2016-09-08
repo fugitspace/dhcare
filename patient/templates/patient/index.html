@@ -48,7 +48,7 @@
 
 {% block right_menu %}
 <ul class="list-group">
-  <li class="list-group-item"><a href="#">Register new patient</a></li>
+  <li class="list-group-item"><a href="{% url 'patient:create_patient'%}">Register new patient</a></li>
   <li class="list-group-item"><a href="#">Admission</a></li>
 </ul>
 {% endblock %}

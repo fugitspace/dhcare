@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block sitehead %}
+<title>dcare: Patient Management</title>
+{% endblock %}
+
+
+{% block content %}
+<h1>Add a Patient!</h1>	  
+<form method="post" action="{% url 'patient:create_patient' %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <label class="sr-only" for="patientNames">Patient Names</label>
+    <p>
+      <div class="input-group">
+	<td><div class="input-group-addon">{{form.prefix.label_tag}}</div></td>
+	<td>{{ form.prefix }}</td>
+      </div>
+    </p>
+    <p>
+      <div class="input-group">
+	<div class="input-group-addon">{{form.firstname.label_tag}}</div>		
+	{{ form.firstname }}
+      </div>
+    </p>
+    <p>
+      <div class="input-group">
+	<div class="input-group-addon">{{form.surname.label_tag}}</div>		
+	{{ form.surname }}
+      </div>
+    </p>
+    <p>
+      <div class="input-group">
+	<div class="input-group-addon">{{form.othername.label_tag}}</div>		
+	{{ form.othername }}
+      </div>
+    </p>
+    <p>
+      <input type="submit" class="btn btn-primary" value="Save Patient" />
+    </p>    
+  </div>
+</form>
+{% endblock %}
+
+
+{% block right_menu %}
+
+<div>&nbsp;</div>
+<ul class="list-group">
+  <li class="list-group-item">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Patient Search">
+      <span class="input-group-btn">
+	<button class="btn btn-default" type="button"><span title="Find" class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+      </span>
+    </div>
+    <div>&nbsp;</div>
+  </li>
+  
+  <li class="list-group-item"><a href="{% url 'patient:create_patient'%}">Register new patient</a></li>
+  <li class="list-group-item"><a href="#">Admission</a></li>
+</ul>
+{% endblock %}
+
