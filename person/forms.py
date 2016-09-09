@@ -18,8 +18,12 @@ class PersonContactForm(ModelForm):
         fields = ['mobile', 'alt_mobile', 'telephone', 'email', 'mailing_address']
         widgets = {
             'mailing_address':Textarea(
-                attrs={'cols':80, 'rows':20, 'class':"form-control"}
-            )
+                attrs={'cols':4, 'rows':5, 'class':"form-control"}
+            ),
+            'mobile':TextInput(attrs={'class':'form-control'}),
+            'alt_mobile':TextInput(attrs={'class':'form-control'}),
+            'telephone':TextInput(attrs={'class':'form-control'}),
+            'email':TextInput(attrs={'class':'form-control'}),            
         }
 
 class PersonDemographicForm(ModelForm):
