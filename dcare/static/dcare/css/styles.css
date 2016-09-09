@@ -26,6 +26,10 @@ nav {
     background-color:#4f99cb;
 }
 
+.panel-heading {
+    font-weight:bold;
+}
+
 table td {
     text-align:left;
 }

@@ -6,40 +6,45 @@
 
 
 {% block content %}
-<h1>Add a Patient!</h1>	  
-<form method="post" action="{% url 'patient:create_patient' %}">
-  {% csrf_token %}
-  <div class="form-group">
-    <label class="sr-only" for="patientNames">Patient Names</label>
-    <p>
-      <div class="input-group">
-	<td><div class="input-group-addon">{{form.prefix.label_tag}}</div></td>
-	<td>{{ form.prefix }}</td>
-      </div>
-    </p>
-    <p>
-      <div class="input-group">
-	<div class="input-group-addon">{{form.firstname.label_tag}}</div>		
-	{{ form.firstname }}
-      </div>
-    </p>
-    <p>
-      <div class="input-group">
-	<div class="input-group-addon">{{form.surname.label_tag}}</div>		
-	{{ form.surname }}
-      </div>
-    </p>
-    <p>
-      <div class="input-group">
-	<div class="input-group-addon">{{form.othername.label_tag}}</div>		
-	{{ form.othername }}
-      </div>
-    </p>
-    <p>      
-      <input type="submit" class="btn btn-primary" value="Save Patient" />
-    </p>    
-  </div>
-</form>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{form_title}}
+  </div>  
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="sr-only" for="patientNames">Patient Names</label>
+      <p>
+	<div class="input-group">
+	  <td><div class="input-group-addon">{{form.prefix.label_tag}}</div></td>
+	  <td>{{ form.prefix }}</td>
+	</div>
+      </p>
+      <p>
+	<div class="input-group">
+	  <div class="input-group-addon">{{form.firstname.label_tag}}</div>		
+	  {{ form.firstname }}
+	</div>
+      </p>
+      <p>
+	<div class="input-group">
+	  <div class="input-group-addon">{{form.surname.label_tag}}</div>		
+	  {{ form.surname }}
+	</div>
+      </p>
+      <p>
+	<div class="input-group">
+	  <div class="input-group-addon">{{form.othername.label_tag}}</div>		
+	  {{ form.othername }}
+	</div>
+      </p>
+      <p>      
+	<input type="submit" class="btn btn-primary" value="Save Patient" />
+      </p>    
+    </div>
+  </form>
+</div>
+
 {% endblock %}
 
 
