@@ -26,3 +26,9 @@ class PersonDemographicForm(ModelForm):
     class Meta:
         model = PersonDemographic
         fields = ['gender', 'birthdate', 'marital_status', 'religion']
+        widgets = {
+            'gender':Select(attrs={'class':'form-control'}),
+            'marital_status':Select(attrs={'class':'form-control'}),
+            'religion':Select(attrs={'class':'form-control'}),            
+            'birthdate':TextInput(attrs={'class':'form-control', 'id':'birthdate'}),              
+        }

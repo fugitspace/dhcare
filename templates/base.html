@@ -82,12 +82,13 @@
       {% endblock %}
     </div>
     <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
-
-  <script src="{% static 'dcare/js/jquery.min.js' %}"></script>
-  <script src="{% static 'dcare/js/circle-progress.js' %}"></script>
-  <script src="{% static 'dcare/js/hnp_stats.js' %}"></script>
-  <script src="{% static 'dcare/js/jquery-ui.js' %}"></script>
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="{% static 'dcare/js/bootstrap.min.js' %}"></script>  
-</body>
+    {% block scripts%}
+    <script src="{% static 'dcare/js/jquery.min.js' %}"></script>
+    <script src="{% static 'dcare/js/circle-progress.js' %}"></script>
+    <script src="{% static 'dcare/js/hnp_stats.js' %}"></script>
+    <script src="{% static 'dcare/js/jquery-ui.js' %}"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="{% static 'dcare/js/bootstrap.min.js' %}"></script>
+    {% endblock %}
+  </body>
 </html>

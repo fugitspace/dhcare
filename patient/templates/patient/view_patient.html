@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-
+{% load l10n %}
+{% load tz %}
 {% block sitehead %}
 <title>dcare: Patient Management</title>
 {% endblock %}
@@ -18,8 +19,8 @@
     <tbody>
       <tr><th>Prefix:</th><td>{{ patient.prefix }}</td><td rowspan="3"><img src="" alt="{{ patient.surname}} {{ patient.firstname}}"/></td></tr>
       <tr><th>Surname:</th><td>{{ patient.surname }}</td></tr>
-      <tr><th>Surname:</th><td>{{ patient.firstname }}</td></tr>
-      <tr><th>Surname:</th><td>{{ patient.othername }}</td><td>{{ patient.surname }}</td></tr>      
+      <tr><th>Firstname:</th><td>{{ patient.firstname }}</td></tr>
+      <tr><th>Othername:</th><td>{{ patient.othername }}</td><td><strong>First Came:</strong> {{ patient.date_created|timezone:"Africa/Nairobi" }}</td></tr>      
     </tbody>
   </table>
 </div>
@@ -41,8 +42,9 @@
     <div>&nbsp;</div>
   </li>
   
-  <li class="list-group-item"><a href="{% url 'patient:create_patient'%}">Register new patient</a></li>
-  <li class="list-group-item"><a href="#">Admission</a></li>
+  <li class="list-group-item"><a href="{% url 'patient:create_patient_demographic' patient.id%}">Add Demographic</a></li>
+  <li class="list-group-item"><a href="{% url 'patient:create_patient_contact' patient.id%}">Add Contact Information</a></li>
+  <li class="list-group-item"><a href="{% url 'patient:create_patient_relative' patient.id%}">Add Relative</a></li>
 </ul>
 {% endblock %}
 

@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 
 from person.forms import PersonForm, PersonContactForm, PersonDemographicForm
-from patient.models import Patient
-from person.models import Prefix
+from patient.models import Patient, PatientDemographic, PatientContact
+from person.models import Prefix, MaritalStatus, Gender, Religion
 
 # Create your views here.
 def home(request):
@@ -47,3 +47,58 @@ def view_patient(request, patient_id):
     patient = Patient.objects.get(pk = patient_id)
     
     return render(request, 'patient/view_patient.html', {'patient':patient})
+
+
+################ Patient Demographic ###########################
+
+def create_patient_demographic(request, patient_id):
+    form_title = "Patient Demographic"
+    if request.method == 'POST':
+        form = PersonDemographicForm(request.POST)
+        if form.is_valid():
+            patient = PatientDemographic()
+            patient.person = get_object_or_404(Patient, pk=patient_id)
+            patient.gender = Gender.objects.get(pk = request.POST['gender'])
+            patient.marital_status = MaritalStatus.objects.get(pk = request.POST['marital_status'])
+            patient.religion = Religion.objects.get(pk = request.POST['religion'])
+            patient.birthdate = request.POST['birthdate']
+            patient.save()
+            return HttpResponseRedirect(reverse('patient:view_patient', args=(patient_id,)))
+    else:
+        form = PersonDemographicForm()
+        
+    return render(request, 'patient/create_patient_demographic.html', {'form':form, 'form_title':form_title}) 
+
+def create_patient_contact(request):
+    form_title = "Patient Contact"
+    if request.method == 'POST':
+        form = PersonContactForm(request.POST)
+        if form.is_valid():
+            patient = PatientContact()
+            patient.surname = request.POST['surname']
+            patient.firstname = request.POST['firstname']
+            patient.othername = request.POST['othername']
+            patient.prefix = Prefix.objects.get(pk = request.POST['prefix'])
+            patient.save()
+            return HttpResponseRedirect(reverse('patient:view_patient', args=(patient.id,)))
+    else:
+        form = PersonForm()
+        
+    return render(request, 'patient/create_patient_contact.html', {'form':form, 'form_title':form_title})
+
+def create_patient_relative(request):
+    form_title = "Add New Patient"
+    if request.method == 'POST':
+        form = PersonForm(request.POST)
+        if form.is_valid():
+            patient = Patient()
+            patient.surname = request.POST['surname']
+            patient.firstname = request.POST['firstname']
+            patient.othername = request.POST['othername']
+            patient.prefix = Prefix.objects.get(pk = request.POST['prefix'])
+            patient.save()
+            return HttpResponseRedirect(reverse('patient:view_patient', args=(patient.id,)))
+    else:
+        form = PersonForm()
+        
+    return render(request, 'patient/create_patient_relative.html', {'form':form, 'form_title':form_title}) 
