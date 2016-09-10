@@ -1,9 +1,10 @@
 import json
 
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 from person.forms import PersonForm, PersonContactForm, PersonDemographicForm
 from patient.forms import PatientVitalsForm
@@ -12,9 +13,24 @@ from person.models import Prefix, MaritalStatus, Gender, Religion
 
 # Create your views here.
 def home(request):
-    recently_added = Patient.objects.order_by('-date_created')[:5]        
+    recently_added = Patient.objects.order_by('-date_created')[:10]        
     return render(request, 'patient/index.html', {'recently_added':recently_added})
 
+def search_patient(request):    
+    if request.is_ajax():
+        q = request.GET['q']
+        print "Search for ", q
+        if q is not None:
+            patients = Patient.objects.filter(
+                Q(firstname__icontains = q) |
+                Q(surname__icontains = q) |
+                Q(othername__icontains = q)
+                ).order_by('firstname')
+            
+            return render(request, 'patient/search_patient.html', {'patients_found':patients})
+    else:
+        print "request was not ajax"
+            
 
 def create_patient(request):
     form_title = "Add New Patient"

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load staticfiles %}
 {% block sitehead %}
 <title>dcare: Patient Management</title>
 {% endblock %}
@@ -8,21 +8,23 @@
 {% block content %}
 <div class="row">
   <div class="input-group">
-    <input type="text" class="form-control" placeholder="Patient Search">
+    <input type="text" class="form-control" id="q" placeholder="Patient Search" />
     <span class="input-group-btn">
-      <button class="btn btn-default" type="button"><span title="Find" class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+      <button class="btn btn-default" type="button"><span title="Find" id="search_submit" class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
     </span>
   </div>
+  <span id="spinner"><img src"{% static 'dcare/img/Ajax-loader.gif' %}" /></span>
 </div>
-
-<div class="row">
-  <table class="table table-hover">
-    <h3>Recently added patients</h3>
-    <thead>
-      <tr><th>Firstname</th><th>Surname</th><th>Other name</th><th colspan="2">Action</th></tr>
-    </thead>
-    <tbody>
-      {% for patient in recently_added %}
+<div id="result">
+  {% if not patients_found %}
+  <div class="row">
+    <table class="table table-hover">
+      <h3>Recently added patients</h3>
+      <thead>
+	<tr><th>Firstname</th><th>Surname</th><th>Other name</th><th colspan="2">Action</th></tr>
+      </thead>
+      <tbody>
+	{% for patient in recently_added %}
       <tr>
 	<td>{{ patient.firstname }}</td>
 	<td> {{ patient.surname }} </td>
@@ -39,17 +41,57 @@
 	</td>
       </tr>
       {% endfor %}
-    </tbody>    
-  </table>
-</div>
+      </tbody>    
+    </table>
+  </div>
+ </div>
+{% else %}
+<h1>We found something here</h1>
+{% endif %}
+
 
 {% endblock %}
 
 
 {% block right_menu %}
-<ul class="list-group">
+<ul class="list-group ui-widget">
   <li class="list-group-item"><a href="{% url 'patient:create_patient'%}">Register new patient</a></li>
   <li class="list-group-item"><a href="#">Admission</a></li>
 </ul>
 {% endblock %}
 
+{% block scripts %}
+{{ block.super }}
+
+<script type="text/javascript">  
+  $( document ).ready( function() {
+  $( "#search_submit" ).click( function() {
+  q = $( "#q" ).val();
+
+  search_patients();
+  $( "#results" ).html( "&nbsp;" ).load("/patient/search_patient/?q=" + q );
+  });
+  });
+
+  function search_patients(){
+  $.ajax({
+  url: "{% url 'patient:search_patient' %}",
+  type: "GET",
+  data: {q: $( "#q" ).val()},
+
+  // handle a successful response
+  success : function(data) {
+  $("#result").html(data); // remove the value from the input
+  dataType: "html"
+  },
+  })
+  }
+  
+  $( document ).ajaxStart( function() {
+  $( "#spinner" ).show();
+  }).ajaxStop( function() {
+  $( "#spinner" ).hide();
+  });
+</script>
+
+{% endblock %}

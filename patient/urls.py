@@ -19,6 +19,7 @@ app_name = 'patient'
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^create/$', views.create_patient, name='create_patient'),
+    url(r'^search/$', views.search_patient, name='search_patient'),
     url(r'^view/(?P<patient_id>[0-9]+)/$', views.view_patient, name='view_patient'),
     url(r'^edit/(?P<patient_id>[0-9]+)/$', views.edit_patient, name='edit_patient'),
     url(r'^(?P<patient_id>[0-9]+)/demographic/$', views.create_patient_demographic, name='create_patient_demographic'),
