@@ -4,7 +4,7 @@ from django.contrib import admin
 from patient.models import Patient, PatientDemographic, PatientContact, PatientVitals, Vitals
 
 class PatientAdmin(admin.ModelAdmin):
-    list_display = ['firstname', 'surname', 'othername']
+    list_display = ['id_number', 'firstname', 'surname', 'othername']
 
 class PatientDemographicAdmin(admin.ModelAdmin):
     list_display = ['person', 'gender', 'birthdate', 'marital_status', 'religion']

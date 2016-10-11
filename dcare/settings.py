@@ -33,12 +33,7 @@ LOGIN_URL = 'login/'
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'encounter',
     'patient',
     'geography',
     'person',
@@ -46,6 +41,12 @@ INSTALLED_APPS = [
     'laboratory',
     'pharmacy',
     'radiology',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE_CLASSES = [

@@ -1,4 +1,5 @@
-django==1.9.7
+django==1.9
 psycopg2==2.6.2
 djangorestframework==3.4.6
 django-hstore==1.4.2
+reportlab==3.3

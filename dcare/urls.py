@@ -26,8 +26,9 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^patient/', include('patient.urls')),
+    url(r'^encounter/', include('encounter.urls')),
     url(r'^appointment/', include('appointment.urls')),
     url(r'^laboratory/', include('laboratory.urls')),
     url(r'^radiology/', include('radiology.urls')),
-    url(r'^pharmacy/', include('pharmacy.urls'))    
+    url(r'^pharmacy/', include('pharmacy.urls'))
 ]

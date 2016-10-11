@@ -6,8 +6,8 @@ from person.models import Person, PersonDemographic, PersonPhoto, PersonContact,
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ['surname', 'firstname', 'othername', 'prefix', 'last_modified']
-    search_fields = ('surname', 'firstname', 'othername',)
+    list_display = ['id_number', 'surname', 'firstname', 'othername', 'prefix', 'last_modified']
+    search_fields = ('id_number', 'surname', 'firstname', 'othername',)
 
 class PersonDemographicAdmin(admin.ModelAdmin):
     list_display = ['person', 'gender', 'birthdate', 'marital_status', 'religion']

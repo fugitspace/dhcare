@@ -1,4 +1,7 @@
 import json
+from datetime import date
+
+from reportlab.pdfgen import canvas
 
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
@@ -10,6 +13,7 @@ from person.forms import PersonForm, PersonContactForm, PersonDemographicForm
 from patient.forms import PatientVitalsForm
 from patient.models import Patient, PatientDemographic, PatientContact, Vitals, PatientVitals
 from person.models import Prefix, MaritalStatus, Gender, Religion
+from encounter.models import Encounter
 
 # Create your views here.
 def home(request):
@@ -41,7 +45,8 @@ def create_patient(request):
             patient.surname = request.POST['surname']
             patient.firstname = request.POST['firstname']
             patient.othername = request.POST['othername']
-            patient.prefix = Prefix.objects.get(pk = request.POST['prefix'])
+            patient.prefix = Prefix.objects.get(pk = request.POST['prefix'])                        
+            patient.id_number = "{}-{}".format(date.today().strftime('%Y-%m'), Patient.objects.order_by('-id')[0].id)
             patient.save()
             return HttpResponseRedirect(reverse('patient:view_patient', args=(patient.id,)))
     else:
@@ -68,11 +73,16 @@ def view_patient(request, patient_id):
     vital_measures = PatientVitals.objects.filter(patient__id__exact=patient_id).order_by('-date_created')[:1]
     demographic_info = PatientDemographic.objects.filter(person_id__exact=patient_id)
     contact_info = PatientContact.objects.filter(person_id__exact=patient_id)
+    encounter = Encounter.objects.filter(patient_id__exact = patient_id).order_by('-start_date')[:1]
+    
     print contact_info
     context['patient'] = patient
 
-    if len(contact_info) != 0:
+    if len(contact_info) != 0:        
         context['contact'] = contact_info[0]
+        
+    if len(encounter) != 0:        
+        context['encounter'] = encounter[0]
         
     if len(demographic_info) != 0:        
         context['demographic'] = demographic_info[0]
@@ -170,3 +180,26 @@ def view_patient_vitals(request, patient_id):
     patientObj = PatientVitals.objects.filter(patient__id__exact=patient_id)
 
     return render(request, 'patient/view_patient.html', 'patient')
+
+def patient_index_card(request, patient_id):
+    patientObj = Patient.objects.get(pk=patient_id)
+    full_name = patientObj.surname+"_"+patientObj.firstname+".pdf"
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename='+full_name
+    
+    # Create the PDF object, using the response object as its "file."
+    p = canvas.Canvas(response)
+    
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(10, 100, "KILA MARA UFIKAPO HOSPITALINI HAKIKISHA UMEKILETA.")
+    p.drawString(10, 90, "Namba ya Hospitali: "+str(patientObj.id))
+    p.drawString(10, 80, "Jina la Ukoo: "+patientObj.surname)
+    p.drawString(10, 70, "Majina Mengine: "+patientObj.firstname)
+    p.drawString(10, 60, "Tarehe ya Kuzaliwa: "+str(PatientDemographic.objects.get(person_id__exact=patient_id).birthdate))
+    
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+    return response

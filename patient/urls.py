@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^(?P<patient_id>[0-9]+)/demographic/$', views.create_patient_demographic, name='create_patient_demographic'),
     url(r'^(?P<patient_id>[0-9]+)/contact/$', views.create_patient_contact, name='create_patient_contact'),
     url(r'^(?P<patient_id>[0-9]+)/vitals/$', views.create_patient_vitals, name='create_patient_vitals'),
+    url(r'^(?P<patient_id>[0-9]+)/index_card/$', views.patient_index_card, name='create_patient_index_card'),
     url(r'^(?P<patient_id>[0-9]+)/relative/$', views.create_patient_relative, name='create_patient_relative'),
 ]

@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from datetime import date, datetime
 from django.db import models
 
 # Create your models here.
@@ -44,8 +44,7 @@ class Prefix(models.Model):
 
     class Meta:
         verbose_name_plural = "Prefixes"
-
-        
+         
 class Person(models.Model):
     surname = models.CharField("Surname", max_length=200)
     firstname = models.CharField("Firstname", max_length=200)
@@ -53,8 +52,14 @@ class Person(models.Model):
     prefix = models.ForeignKey(Prefix)
     date_created = models.DateTimeField(auto_now_add = True)
     last_modified = models.DateTimeField(auto_now = True)
+    id_number = models.CharField("ID Number", unique=True, max_length=200, editable=False, default='00-00-00')
+
+        
     def __str__(self):
         return "{} {}".format(self.surname, self.firstname)
+
+    class Meta:
+        get_latest_by = 'date_created'
     
 class PersonDemographic(models.Model):
     person = models.ForeignKey(Person)
