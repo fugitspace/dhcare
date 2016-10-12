@@ -27,6 +27,7 @@
       <tbody>
 	{% for encounter in recently_added %}
 	<tr>
+	  <td>{{ encounter.patient.id_number }}</td>
 	  <td>{{ encounter.patient.firstname }}</td>
 	  <td> {{ encounter.patient.surname }} </td>
 	  <td> {{ encounter.start_date }}</td> {#|timezone:"Africa/Nairobi"#}

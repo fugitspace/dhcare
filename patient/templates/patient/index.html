@@ -26,6 +26,7 @@
       <tbody>
 	{% for patient in recently_added %}
       <tr>
+	<td>{{ patient.id_number }}</td>
 	<td>{{ patient.firstname }}</td>
 	<td> {{ patient.surname }} </td>
 	<td> {{ patient.othername }}</td>
