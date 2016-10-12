@@ -24,6 +24,9 @@ class Region(models.Model):
     date_created = models.DateTimeField("Date Published", auto_now_add=True)
     last_modified = models.DateTimeField("Last Updated", auto_now=True)
 
+    def __str__(self):
+        return "{}".format(self.name)
+
 class District(models.Model):
     name = models.CharField("District Name", max_length=200)
     code = models.CharField("Abbreviation", max_length=200, blank=True)
@@ -31,9 +34,15 @@ class District(models.Model):
     date_created = models.DateTimeField("Date Published", auto_now_add=True)
     last_modified = models.DateTimeField("Last Updated", auto_now=True)
 
+    def __str__(self):
+        return "{} - {}".format(self.name, self.region)
+
 class Ward(models.Model):
     name = models.CharField("District Name", max_length=200)
     code = models.CharField("Abbreviation", max_length=200, blank=True)
     district = models.ForeignKey(District)
     date_created = models.DateTimeField("Date Published", auto_now_add=True)
     last_modified = models.DateTimeField("Last Updated", auto_now=True)
+
+    def __str__(self):
+        return "{} - {}".format(self.name - self.district)

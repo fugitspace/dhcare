@@ -12,8 +12,8 @@ from django.db.models import Q
 from person.forms import PersonForm, PersonContactForm, PersonDemographicForm
 from patient.models import Patient, PatientDemographic, PatientContact
 from person.models import Prefix, MaritalStatus, Gender, Religion
-from encounter.models import Encounter, EncounterStatus, Vitals, PatientVitals
-from encounter.forms import PatientVitalsForm
+#from encounter.models import Encounter, EncounterStatus, Vitals, PatientVitals
+#from encounter.forms import PatientVitalsForm
 
 # Create your views here.
 def home(request):
