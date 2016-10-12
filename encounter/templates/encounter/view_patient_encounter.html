@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load l10n %}
+{% load tz %}
+{% block sitehead %}
+<title>dcare: Patient Management</title>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span style="float:left">Patient ID: <i>{{ patient.id_number }}</i></span> Encounter Started: <i>{{ patient__encounter__start_date }}</i>
+  </div>
+  <table class="table">
+    <tbody>
+      <tr>
+	<th>Prefix:</th><td>{{ patient.prefix }}</td><td rowspan="4"><img src="" alt="{{ patient.surname}} {{ patient.firstname}}"/></td>
+      </tr>
+      <tr><th>Surname:</th><td>{{ patient.surname }}</td></tr>
+      <tr><th>Firstname:</th><td>{{ patient.firstname }}</td></tr>
+      <tr><th>Othername:</th><td>{{ patient.othername }}</td>
+	<!--<td><strong>Encounter:</strong>
+	  {% if not encounter %}
+	  <button id="set-encounter" value="{{ patient.id }}">Start</button>
+	  {% else %}
+	  <span id="encounter">{{ encounter.status }}</span>
+	  <button id="end-encounter" value="{{ encounter.id }}">End</button>
+	  {% endif %}
+	</td> -->
+      </tr>      
+    </tbody>
+  </table>
+</div>
+{% if record_date %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Patient Vitals Information
+  </div>
+  <table class="table">
+    <tbody>
+      {% for measure, value in patient_vitals.iteritems %}
+      <tr><th>{{ measure }}</th><td>{{ value }}</td></tr>
+      {% endfor %}
+      <tr><th>Date Recorded:</th><td>{{ record_date|timezone:"Africa/Nairobi" }}</td></tr>
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% if demographic %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Patient Demographic Information
+  </div>
+  <table class="table">
+    <tbody>      
+      <tr><th>Gender</th><td>{{ demographic.gender }}</td></tr>
+      <tr><th>Date of Birth</th><td>{{ demographic.birthdate }}</td></tr>
+      <tr><th>Marital Status</th><td>{{ demographic.marital_status }}</td></tr>
+      <tr><th>Religion</th><td>{{ demographic.religion }}</td></tr>            
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% if contact %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Patient Contact Information
+  </div>
+  <table class="table">
+    <tbody>      
+      <tr><th>Mobile</th><td>{{ contact.mobile }}</td></tr>
+      <tr><th>Alternative Mobile</th><td>{{ contact.alt_mobile }}</td></tr>
+      <tr><th>Telephone</th><td>{{ contact.telephone }}</td></tr>
+      <tr><th>Email</th><td>{{ contact.email }}</td></tr>
+      <tr><th>Mailing Address</th><td>{{ contact.mailing_address }}</td></tr>            
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+{% block right_menu %}
+
+<div>&nbsp;</div>
+<ul class="list-group">
+  <li class="list-group-item">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Patient Search">
+      <span class="input-group-btn">
+	<button class="btn btn-default" type="button"><span title="Find" class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+      </span>
+    </div>
+    <div>&nbsp;</div>
+  </li>
+  <li class="list-group-item"><a href="{% url 'patient:create_patient_vitals' patient.id %}">Vitals Information</a></li>
+  {% if not demographic %}
+  <li class="list-group-item"><a href="{% url 'patient:create_patient_demographic' patient.id %}">Add Demographic</a></li>
+  {% endif %}
+  {% if not contact %}
+  <li class="list-group-item"><a href="{% url 'patient:create_patient_contact' patient.id %}">Add Contact Information</a></li>
+  {% endif %}
+  <li class="list-group-item"><a href="{% url 'patient:create_patient_relative' patient.id %}">Add Relative</a></li>
+</ul>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript">  
+  $( document ).ready( function() {
+  $( "#set-encounter" ).click( function() {  
+  set_encounter();
+  });
+  });
+
+  function set_encounter(){
+  $.ajax({
+  url: "{% url 'encounter:new_encounter' patient.id %}",
+  type: "GET",
+  // data: {q: $( "#set-encounter" ).val()},
+
+  // handle a successful response
+  success : function(json) {
+  $("#set-encounter").remove();
+  $("#encounter").text(json.status); // set value for encounter
+  $("#end-encounter").val(json.id);
+  // dataType: "html"
+  },
+  })
+  }
+  
+  $( document ).ajaxStart( function() {
+  $( "#spinner" ).show();
+  }).ajaxStop( function() {
+  $( "#spinner" ).hide();
+  });
+</script>
+{% endblock %}
