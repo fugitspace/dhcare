@@ -46,7 +46,7 @@ def create_patient(request):
             patient.firstname = request.POST['firstname']
             patient.othername = request.POST['othername']
             patient.prefix = Prefix.objects.get(pk = request.POST['prefix'])                        
-            patient.id_number = "{}-{}".format(date.today().strftime('%Y-%m'), 1 if len(Patient.objects.all()) == 0 else Patient.objects.order_by('-id')[0].id)
+            patient.id_number = "{}-{}".format(date.today().strftime('%Y-%m'), 1 if len(Patient.objects.all()) == 0 else (Patient.objects.all().order_by('-id')[0].id)+1)
             patient.save()
             return HttpResponseRedirect(reverse('patient:view_patient', args=(patient.id,)))
     else:
@@ -75,8 +75,7 @@ def view_patient(request, patient_id):
     contact_info = PatientContact.objects.filter(person_id__exact=patient_id)
     relative_info = PatientRelative.objects.filter(person_id__exact=patient_id)
     encounter = Encounter.objects.filter(patient_id__exact = patient_id).order_by('-start_date')[:1]
-    
-    print contact_info
+        
     context['patient'] = patient
 
     if len(contact_info) != 0:        
@@ -92,14 +91,14 @@ def view_patient(request, patient_id):
         context['demographic'] = demographic_info[0]
         
     if len(vital_measures) != 0:
-        record_date = vital_measures[0].date_created
+        record_date = vital_measures[0].date_created        
         vital_measures = json.loads(vital_measures[0].measures)
         patient_vitals = {}
         for key, measure in vital_measures.iteritems():
             if key != 'csrfmiddlewaretoken':
                 patient_vitals[get_object_or_404(Vitals, pk=int(key)).name] = measure
-                context['patient_vitals'] = patient_vitals
-                context['record_date'] = record_date          
+        context['patient_vitals'] = patient_vitals
+        context['record_date'] = record_date          
     return render(request, 'patient/view_patient.html', context)
 
 
@@ -177,7 +176,6 @@ def create_patient_vitals(request, patient_id):
         encounter.save()
         
         patientvitals = json.dumps(request.POST)
-        print patientvitals
         patientObject = get_object_or_404(Patient, pk=patient_id)
         pVital = PatientVitals()
         pVital.measures = patientvitals
@@ -193,10 +191,6 @@ def create_patient_vitals(request, patient_id):
         
     return render(request, 'patient/create_patient_vitals.html', {'form':vital_fields, 'form_title':form_title}) 
 
-def view_patient_vitals(request, patient_id):
-    patientObj = PatientVitals.objects.filter(patient__id__exact=patient_id)
-
-    return render(request, 'patient/view_patient.html', 'patient')
 
 def patient_index_card(request, patient_id):
     patientObj = Patient.objects.get(pk=patient_id)

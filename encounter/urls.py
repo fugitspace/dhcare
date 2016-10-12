@@ -18,7 +18,7 @@ from encounter import views
 app_name = 'encounter'
 urlpatterns = [
     url(r'^home/$', views.home, name='home'),
-    url(r'^encounter/(?P<patient_id>[0-9]+)/$', views.view_patient_encounter, name='view_patient_encounter'),
+    url(r'^encounter/(?P<encounter_id>[0-9]+)/$', views.view_patient_encounter, name='view_patient_encounter'),
     url(r'^patient/(?P<patient_id>[0-9]+)/new/$', views.new_encounter, name='new_encounter'),
     url(r'^encounter/(?P<encounter_id>[0-9]+)/$', views.end_encounter, name='end_encounter'),
 ]

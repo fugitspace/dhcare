@@ -32,7 +32,7 @@
       {% for measure, value in patient_vitals.iteritems %}
       <tr><th>{{ measure }}</th><td>{{ value }}</td></tr>
       {% endfor %}
-      <tr><th>Date Recorded:</th><td>{{ record_date|timezone:"Africa/Nairobi" }}</td></tr>
+      <tr><th>Date Recorded:</th><td>{{ record_date }}</td></tr> {# |timezone:"Africa/Nairobi" #}
     </tbody>
   </table>
 </div>

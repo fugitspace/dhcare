@@ -10,7 +10,7 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <span style="float:left">Patient ID: <i>{{ patient.id_number }}</i></span> Encounter Started: <i>{{ patient__encounter__start_date }}</i>
+    <span style="float:left">Patient ID: <i>{{ patient.id_number }}</i></span> Encounter Started: <i>{{ record_date }}</i>
   </div>
   <table class="table">
     <tbody>
@@ -20,14 +20,6 @@
       <tr><th>Surname:</th><td>{{ patient.surname }}</td></tr>
       <tr><th>Firstname:</th><td>{{ patient.firstname }}</td></tr>
       <tr><th>Othername:</th><td>{{ patient.othername }}</td>
-	<!--<td><strong>Encounter:</strong>
-	  {% if not encounter %}
-	  <button id="set-encounter" value="{{ patient.id }}">Start</button>
-	  {% else %}
-	  <span id="encounter">{{ encounter.status }}</span>
-	  <button id="end-encounter" value="{{ encounter.id }}">End</button>
-	  {% endif %}
-	</td> -->
       </tr>      
     </tbody>
   </table>
