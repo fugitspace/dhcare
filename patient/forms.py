@@ -1,5 +1,5 @@
 from django.forms import ModelForm, Textarea, TextInput, Select
-from encounter.models import PatientVitals, Vitals
+from patient.models import PatientVitals, Vitals
 
 class PatientVitalsForm(ModelForm):
     vitals = Vitals.objects.filter(active__exact = 1)
@@ -11,4 +11,5 @@ class PatientVitalsForm(ModelForm):
         fields = ['measures']
         widgets = {
             'measures':TextInput(attrs={'class':'form-control'})           
-        }
+        }        
+    

@@ -73,7 +73,7 @@ WSGI_APPLICATION = 'dcare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dcare',
+        'NAME': 'dcare2',
         'USER': 'dcare',
         'PASSWORD': 'sovello',
         'HOST': '127.0.0.1',

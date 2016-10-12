@@ -33,10 +33,6 @@ class Encounter(models.Model):
     def __str__(self):
         return self.status    
 
-class PatientEncounterVitals(models.Model):
-    patientvitals = models.ForeignKey(PatientVitals, blank=True, null=True)
-    encounter = models.ForeignKey(Encounter, blank=True, null=True)
-
 class PatientVitals(models.Model):
     patient = models.ForeignKey(Patient)
     measures = models.CharField(max_length=200)
@@ -53,6 +49,10 @@ class Vitals(models.Model):
 
     class Meta:
         verbose_name_plural = "Vitals"
+
+class PatientEncounterVitals(models.Model):
+    patientvitals = models.ForeignKey(PatientVitals, blank=True, null=True)
+    encounter = models.ForeignKey(Encounter, blank=True, null=True)
     
 class EncounterPatientHistory(models.Model):
     '''History recorded for this patient for this encounter'''

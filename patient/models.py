@@ -15,4 +15,3 @@ class PatientDemographic(PersonDemographic):
 
 class PatientContact(PersonContact):
     pass
-
