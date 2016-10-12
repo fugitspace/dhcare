@@ -71,6 +71,25 @@
 </div>
 {% endif %}
 
+{% if relative %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Patient Relative Information
+  </div>
+  <table class="table">
+    <tbody>      
+      <tr><th>Full Name</th><td>{{ relative.full_name }}</td></tr>
+      <tr><th>Relationship</th><td>{{ relative.relationship }}</td></tr>
+      <tr><th>Mobile</th><td>{{ relative.mobile }}</td></tr>
+      <tr><th>Alternative Mobile</th><td>{{ relative.alt_mobile }}</td></tr>
+      <tr><th>Telephone</th><td>{{ relative.telephone }}</td></tr>
+      <tr><th>Email</th><td>{{ relative.email }}</td></tr>
+      <tr><th>Mailing Address</th><td>{{ relative.mailing_address }}</td></tr>            
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
 {% endblock %}
 
 

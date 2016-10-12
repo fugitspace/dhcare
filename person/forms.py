@@ -1,5 +1,5 @@
 from django.forms import ModelForm, Textarea, TextInput, Select, CharField
-from person.models import Person, PersonContact, PersonDemographic
+from person.models import Person, PersonContact, PersonDemographic, Relationship, PersonRelative
 
 class PersonForm(ModelForm):
     class Meta:
@@ -37,4 +37,20 @@ class PersonDemographicForm(ModelForm):
             'marital_status':Select(attrs={'class':'form-control'}),
             'religion':Select(attrs={'class':'form-control'}),            
             'birthdate':TextInput(attrs={'class':'form-control', 'id':'birthdate'}),              
+        }
+
+class PersonRelativeForm(ModelForm):
+    class Meta:
+        model = PersonRelative
+        fields = ['full_name', 'relationship', 'mobile', 'alt_mobile', 'telephone', 'email', 'mailing_address']
+        widgets = {
+            'mailing_address':Textarea(
+                attrs={'cols':4, 'rows':5, 'class':"form-control"}
+            ),
+            'mobile':TextInput(attrs={'class':'form-control'}),
+            'alt_mobile':TextInput(attrs={'class':'form-control'}),
+            'telephone':TextInput(attrs={'class':'form-control'}),
+            'email':TextInput(attrs={'class':'form-control'}),
+            'relationship':Select(attrs={'class':'form-control'}),            
+            'full_name':TextInput(attrs={'class':'form-control'}),
         }

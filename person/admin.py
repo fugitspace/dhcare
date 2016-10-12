@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from person.models import Person, PersonDemographic, PersonPhoto, PersonContact, Gender, MaritalStatus, Religion, Prefix
+from person.models import Person, PersonDemographic, PersonPhoto, PersonContact, Gender, MaritalStatus, Religion, Prefix, Relationship
 
 
 class PersonAdmin(admin.ModelAdmin):
@@ -30,6 +30,9 @@ class ReligionAdmin(admin.ModelAdmin):
 
 class PrefixAdmin(admin.ModelAdmin):
     list_display = ['name', 'last_modified']
+
+class RelationshipAdmin(admin.ModelAdmin):
+    list_display = ['name', 'last_modified']
     
 admin.site.register(Person, PersonAdmin)
 admin.site.register(PersonDemographic, PersonDemographicAdmin)
@@ -39,3 +42,4 @@ admin.site.register(Gender, GenderAdmin)
 admin.site.register(MaritalStatus, MaritalStatusAdmin)
 admin.site.register(Religion, ReligionAdmin)
 admin.site.register(Prefix, PrefixAdmin)
+admin.site.register(Relationship, RelationshipAdmin)

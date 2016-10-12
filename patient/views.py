@@ -9,11 +9,11 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 
-from person.forms import PersonForm, PersonContactForm, PersonDemographicForm
-from patient.models import Patient, PatientDemographic, PatientContact
-from person.models import Prefix, MaritalStatus, Gender, Religion
-#from encounter.models import Encounter, EncounterStatus, Vitals, PatientVitals
-#from encounter.forms import PatientVitalsForm
+from person.forms import PersonForm, PersonContactForm, PersonDemographicForm, PersonRelativeForm
+from patient.models import Patient, PatientDemographic, PatientContact, PatientRelative
+from person.models import Prefix, MaritalStatus, Gender, Religion, Relationship
+from encounter.models import Encounter, EncounterStatus, Vitals, PatientVitals
+from encounter.forms import PatientVitalsForm
 
 # Create your views here.
 def home(request):
@@ -46,7 +46,7 @@ def create_patient(request):
             patient.firstname = request.POST['firstname']
             patient.othername = request.POST['othername']
             patient.prefix = Prefix.objects.get(pk = request.POST['prefix'])                        
-            patient.id_number = "{}-{}".format(date.today().strftime('%Y-%m'), Patient.objects.order_by('-id')[0].id)
+            patient.id_number = "{}-{}".format(date.today().strftime('%Y-%m'), 1 if len(Patient.objects.all()) == 0 else Patient.objects.order_by('-id')[0].id)
             patient.save()
             return HttpResponseRedirect(reverse('patient:view_patient', args=(patient.id,)))
     else:
@@ -73,6 +73,7 @@ def view_patient(request, patient_id):
     vital_measures = PatientVitals.objects.filter(patient__id__exact=patient_id).order_by('-date_created')[:1]
     demographic_info = PatientDemographic.objects.filter(person_id__exact=patient_id)
     contact_info = PatientContact.objects.filter(person_id__exact=patient_id)
+    relative_info = PatientRelative.objects.filter(person_id__exact=patient_id)
     encounter = Encounter.objects.filter(patient_id__exact = patient_id).order_by('-start_date')[:1]
     
     print contact_info
@@ -80,6 +81,9 @@ def view_patient(request, patient_id):
 
     if len(contact_info) != 0:        
         context['contact'] = contact_info[0]
+
+    if len(relative_info) != 0:        
+        context['relative'] = relative_info[0]
         
     if len(encounter) != 0:        
         context['encounter'] = encounter[0]
@@ -139,20 +143,25 @@ def create_patient_contact(request, patient_id):
         
     return render(request, 'patient/create_patient_contact.html', {'form':form, 'form_title':form_title})
 
-def create_patient_relative(request):
-    form_title = "Add New Patient"
+def create_patient_relative(request, patient_id):
+    form_title = "Patient Relative"
     if request.method == 'POST':
-        form = PersonForm(request.POST)
+        form = PersonRelativeForm(request.POST)
         if form.is_valid():
-            patient = Patient()
-            patient.surname = request.POST['surname']
-            patient.firstname = request.POST['firstname']
-            patient.othername = request.POST['othername']
-            patient.prefix = Prefix.objects.get(pk = request.POST['prefix'])
-            patient.save()
+            relative = PatientRelative()
+            relative.mobile = request.POST['mobile']
+            relative.full_name = request.POST['full_name']
+            relative.relationship = Relationship.objects.get(pk = request.POST['relationship'])
+            relative.alt_mobile = request.POST['alt_mobile']
+            relative.telephone = request.POST['telephone']
+            relative.email = request.POST['email']
+            relative.mailing_address = request.POST['mailing_address']
+            patient = get_object_or_404(Patient, pk=patient_id)
+            relative.person = patient            
+            relative.save()
             return HttpResponseRedirect(reverse('patient:view_patient', args=(patient.id,)))
     else:
-        form = PersonForm()
+        form = PersonRelativeForm()
         
     return render(request, 'patient/create_patient_relative.html', {'form':form, 'form_title':form_title}) 
 

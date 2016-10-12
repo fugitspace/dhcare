@@ -44,7 +44,14 @@ class Prefix(models.Model):
 
     class Meta:
         verbose_name_plural = "Prefixes"
-         
+
+class Relationship(models.Model):
+    name = models.CharField("Relationship Name", max_length=200)
+    last_modified = models.DateTimeField(auto_now = True)
+
+    def __str__(self):
+        return "{}".format(self.name)
+        
 class Person(models.Model):
     surname = models.CharField("Surname", max_length=200)
     firstname = models.CharField("Firstname", max_length=200)
@@ -67,7 +74,9 @@ class PersonDemographic(models.Model):
     birthdate = models.DateField("Date of Birth")
     marital_status = models.ForeignKey(MaritalStatus)
     religion = models.ForeignKey(Religion)
-
+    date_created = models.DateTimeField(auto_now_add = True)
+    last_modified = models.DateTimeField(auto_now = True)
+    
     def __str__(self):
         return "{}".format(self.person)
 
@@ -78,7 +87,9 @@ class PersonDemographic(models.Model):
 class PersonPhoto(models.Model):
     person = models.ForeignKey(Person)
     photo = models.CharField("Picture", max_length=300)
-
+    date_created = models.DateTimeField(auto_now_add = True)
+    last_modified = models.DateTimeField(auto_now = True)
+    
     def __str__(self):
         return "{}".format(self.person)
 
@@ -93,6 +104,12 @@ class PersonContact(models.Model):
     alt_mobile = models.CharField("Alternate Mobile Number", blank=True, max_length=200)
     email = models.EmailField(blank=True)
     mailing_address = models.TextField("Mailing Address", blank=True, max_length=200)
+    date_created = models.DateTimeField(auto_now_add = True)
+    last_modified = models.DateTimeField(auto_now = True)
     
     def __str__(self):
         return "{}".format(self.person)
+
+class PersonRelative(PersonContact):    
+    full_name = models.CharField("Relative Name", max_length=200)
+    relationship = models.ForeignKey(Relationship)
