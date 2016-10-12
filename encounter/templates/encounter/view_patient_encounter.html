@@ -24,6 +24,35 @@
     </tbody>
   </table>
 </div>
+{% if history %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Patient Clinical Information
+  </div>
+  <table class="table">
+    <tbody>      
+      <tr><th>History</th><td>{{ history.history|linebreaks }}</td></tr>
+      {% if exam %}
+      <tr><th>Examination</th><td>{{ exam.examination|linebreaks }}</td></tr>
+      <tr><th>Notes</th><td>{{ exam.notes|linebreaks }}</td></tr>
+      {% endif %}
+      {% if investigation %}
+      <tr><th>Examination</th><td>{{ exam.examination|linebreaks }}</td></tr>
+      <tr><th>Notes</th><td>{{ exam.notes|linebreaks }}</td></tr>
+      {% endif %}
+      {% if diagnosis %}
+      <tr><th>Diagnosis</th><td>{{ diagnosis.diagnosis|linebreaks }}</td></tr>
+      <tr><th>Notes</th><td>{{ diagnosis.notes|linebreaks }}</td></tr>
+      {% endif %}
+      {% if treatment %}
+      <tr><th>Treatment</th><td>{{ treatment.examination|linebreaks }}</td></tr>
+      <tr><th>Notes</th><td>{{ treament.notes|linebreaks }}</td></tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
 {% if record_date %}
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -35,36 +64,6 @@
       <tr><th>{{ measure }}</th><td>{{ value }}</td></tr>
       {% endfor %}
       <tr><th>Date Recorded:</th><td>{{ record_date }}</td></tr> {# |timezone:"Africa/Nairobi" #}
-    </tbody>
-  </table>
-</div>
-{% endif %}
-
-{% if history %}
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Patient History
-  </div>
-  <table class="table">
-    <tbody>      
-      <tr><th>History</th><td>{{ history.history|linebreaks }}</td></tr>      
-    </tbody>
-  </table>
-</div>
-{% endif %}
-
-{% if contact %}
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Patient Contact Information
-  </div>
-  <table class="table">
-    <tbody>      
-      <tr><th>Mobile</th><td>{{ contact.mobile }}</td></tr>
-      <tr><th>Alternative Mobile</th><td>{{ contact.alt_mobile }}</td></tr>
-      <tr><th>Telephone</th><td>{{ contact.telephone }}</td></tr>
-      <tr><th>Email</th><td>{{ contact.email }}</td></tr>
-      <tr><th>Mailing Address</th><td>{{ contact.mailing_address }}</td></tr>            
     </tbody>
   </table>
 </div>
@@ -86,11 +85,21 @@
     </div>
     <div>&nbsp;</div>
   </li>
+  {% if not history %}
   <li class="list-group-item"><a href="{% url 'encounter:create_patient_encounter_history' encounter.id %}">Patient History</a></li>
+  {% endif %}
+  {% if not exam %}
   <li class="list-group-item"><a href="{% url 'encounter:create_patient_encounter_exam' encounter.id %}">Examination</a></li>
-  <!--<li class="list-group-item"><a href="{#% url 'patient:create_patient_encounter_investigation' encounter.id %#}">Investigation</a></li>-->
+  {% endif %}
+  {% if not investigation %}
+  <li class="list-group-item"><a href="{#% url 'patient:create_patient_encounter_investigation' encounter.id %#}">Investigation</a></li>
+  {% endif %}
+  {% if not diagnosis %}
   <li class="list-group-item"><a href="{% url 'encounter:create_patient_encounter_diagnosis' encounter.id %}">Diagnoses</a></li>
-  <!--<li class="list-group-item"><a href="{#% url 'encounter:create_patient_encounter_treatment' encounter.id %#}">Treatment</a></li>-->
+  {% endif %}
+  {% if not treatment %}
+  <li class="list-group-item"><a href="{#% url 'encounter:create_patient_encounter_treatment' encounter.id %#}">Treatment</a></li>
+  {% endif %}
 </ul>
 {% endblock %}
 
