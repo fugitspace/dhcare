@@ -16,19 +16,3 @@ class PatientDemographic(PersonDemographic):
 class PatientContact(PersonContact):
     pass
 
-class PatientVitals(models.Model):
-    patient = models.ForeignKey(Patient)
-    measures = models.CharField(max_length=200)
-    date_created = models.DateTimeField(auto_now_add = True)
-    last_modified = models.DateTimeField(auto_now = True)
-
-    class Meta:
-        verbose_name_plural = "Patient Vitals"
-
-        
-class Vitals(models.Model):
-    name = models.CharField(max_length=200)
-    active = models.BooleanField(default = True)
-
-    class Meta:
-        verbose_name_plural = "Vitals"

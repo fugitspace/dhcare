@@ -4,7 +4,7 @@ from datetime import datetime
 from django.utils import timezone
 from django.db import models
 
-from patient.models import Patient, PatientVitals
+from patient.models import Patient
 # Create your models here.
 
 class EncounterStatus(models.Model):
@@ -37,6 +37,22 @@ class PatientEncounterVitals(models.Model):
     patientvitals = models.ForeignKey(PatientVitals, blank=True, null=True)
     encounter = models.ForeignKey(Encounter, blank=True, null=True)
 
+class PatientVitals(models.Model):
+    patient = models.ForeignKey(Patient)
+    measures = models.CharField(max_length=200)
+    date_created = models.DateTimeField(auto_now_add = True)
+    last_modified = models.DateTimeField(auto_now = True)
+
+    class Meta:
+        verbose_name_plural = "Patient Vitals"
+
+        
+class Vitals(models.Model):
+    name = models.CharField(max_length=200)
+    active = models.BooleanField(default = True)
+
+    class Meta:
+        verbose_name_plural = "Vitals"
     
 class EncounterPatientHistory(models.Model):
     '''History recorded for this patient for this encounter'''
