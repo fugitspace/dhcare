@@ -1,11 +1,12 @@
 from datetime import datetime
 import json
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
 
-from encounter.models import Encounter, EncounterStatus, PatientVitals, Vitals
+from encounter.models import Encounter, EncounterStatus, PatientVitals, Vitals, EncounterPatientHistory
+from encounter.forms import PatientEncounterExamForm, PatientEncounterHistoryForm, EncounterDiagnosisForm
 from patient.models import Patient
 # Create your views here.
 
@@ -19,8 +20,10 @@ def view_patient_encounter(request, encounter_id):
     encounter = Encounter.objects.get(pk = encounter_id)
     patient = encounter.patient
     vital_measures = PatientVitals.objects.filter(encounter_id__exact=encounter_id).order_by('-date_created')[:1]
-    #history = EncounterPatientHistory.objects.filter()
+    history = EncounterPatientHistory.objects.filter(encounter_id__exact=encounter_id).order_by('-date_created')[:1]
     context['patient'] = patient
+    context['encounter'] = encounter
+    context['history'] = history[0]
     if len(vital_measures) != 0:
         record_date = vital_measures[0].date_created
         vital_measures = json.loads(vital_measures[0].measures)
@@ -32,6 +35,53 @@ def view_patient_encounter(request, encounter_id):
                 context['record_date'] = record_date
     return render(request, 'encounter/view_patient_encounter.html', context)
 
+def create_patient_encounter_history(request, encounter_id):
+    form_title = "Patient History"
+    if request.method == 'POST':
+        form = PatientEncounterHistoryForm(request.POST)
+        if form.is_valid():
+            history = EncounterPatientHistory()
+            history.history = request.POST['history']
+            history.encounter = Encounter.objects.get(pk = encounter_id) 
+            history.save()
+            return HttpResponseRedirect(reverse('patient:view_patient_encounter', args=(encounter_id,)))
+    else:
+        form = PatientEncounterHistoryForm()
+        
+    return render(request, 'patient/create_patient_relative.html', {'form':form, 'form_title':form_title})
+
+def create_patient_encounter_exam(request, encounter_id):
+    form_title = "Patient Exam"
+    if request.method == 'POST':
+        form = PatientEncounterExamForm(request.POST)
+        if form.is_valid():
+            exam = EncounterPatientExamination()
+            exam.examination = request.POST['examination']
+            exam.notes = request.POST['notes']
+            exam.encounter = Encounter.objects.get(pk = 'encounter_id')
+            exam.save()
+            return HttpResponseRedirect(reverse('patient:view_patient_encounter', args=(encounter_id,)))
+    else:
+        form = PatientEncounterExamForm()
+        
+    return render(request, 'patient/create_patient_relative.html', {'form':form, 'form_title':form_title})
+
+
+def create_patient_encounter_diagnosis(request, encounter_id):
+    form_title = "Patient Diagnosis"
+    if request.method == 'POST':
+        form = EncounterDiagnosisForm(request.POST)
+        if form.is_valid():
+            diagnosis = EncounterDiagnosis()
+            diagnosis.diagnosis = request.POST['diagnosis']
+            diagnosis.notes = request.POST['notes']
+            diagnosis.encounter = Encounter.objects.get(pk = 'encounter_id')
+            exam.save()
+            return HttpResponseRedirect(reverse('patient:view_patient_encounter', args=(encounter_id,)))
+    else:
+        form = PatientEncounterExamForm()
+        
+    return render(request, 'patient/create_patient_relative.html', {'form':form, 'form_title':form_title})
 
 def new_encounter(request, patient_id):
     if request.is_ajax():

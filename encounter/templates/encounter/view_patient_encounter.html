@@ -34,23 +34,20 @@
       {% for measure, value in patient_vitals.iteritems %}
       <tr><th>{{ measure }}</th><td>{{ value }}</td></tr>
       {% endfor %}
-      <tr><th>Date Recorded:</th><td>{{ record_date|timezone:"Africa/Nairobi" }}</td></tr>
+      <tr><th>Date Recorded:</th><td>{{ record_date }}</td></tr> {# |timezone:"Africa/Nairobi" #}
     </tbody>
   </table>
 </div>
 {% endif %}
 
-{% if demographic %}
+{% if history %}
 <div class="panel panel-default">
   <div class="panel-heading">
-    Patient Demographic Information
+    Patient History
   </div>
   <table class="table">
     <tbody>      
-      <tr><th>Gender</th><td>{{ demographic.gender }}</td></tr>
-      <tr><th>Date of Birth</th><td>{{ demographic.birthdate }}</td></tr>
-      <tr><th>Marital Status</th><td>{{ demographic.marital_status }}</td></tr>
-      <tr><th>Religion</th><td>{{ demographic.religion }}</td></tr>            
+      <tr><th>History</th><td>{{ history.history|linebreaks }}</td></tr>      
     </tbody>
   </table>
 </div>
@@ -89,14 +86,11 @@
     </div>
     <div>&nbsp;</div>
   </li>
-  <li class="list-group-item"><a href="{% url 'patient:create_patient_vitals' patient.id %}">Vitals Information</a></li>
-  {% if not demographic %}
-  <li class="list-group-item"><a href="{% url 'patient:create_patient_demographic' patient.id %}">Add Demographic</a></li>
-  {% endif %}
-  {% if not contact %}
-  <li class="list-group-item"><a href="{% url 'patient:create_patient_contact' patient.id %}">Add Contact Information</a></li>
-  {% endif %}
-  <li class="list-group-item"><a href="{% url 'patient:create_patient_relative' patient.id %}">Add Relative</a></li>
+  <li class="list-group-item"><a href="{% url 'encounter:create_patient_encounter_history' encounter.id %}">Patient History</a></li>
+  <li class="list-group-item"><a href="{% url 'encounter:create_patient_encounter_exam' encounter.id %}">Examination</a></li>
+  <!--<li class="list-group-item"><a href="{#% url 'patient:create_patient_encounter_investigation' encounter.id %#}">Investigation</a></li>-->
+  <li class="list-group-item"><a href="{% url 'encounter:create_patient_encounter_diagnosis' encounter.id %}">Diagnoses</a></li>
+  <!--<li class="list-group-item"><a href="{#% url 'encounter:create_patient_encounter_treatment' encounter.id %#}">Treatment</a></li>-->
 </ul>
 {% endblock %}
 
