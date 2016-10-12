@@ -12,23 +12,13 @@
   <div class="panel-heading">
     <span style="float:left">Patient Information</span>  ID: <i>{{ patient.id_number }}</i>
   </div>
-  <!--<div class="panel-body">
-    <h2>{{patient.firstname}} {{patient.othername}}</h2>
-  </div>-->
   <table class="table">
     <tbody>
-      <tr><th>Prefix:</th><td>{{ patient.prefix }}</td><td rowspan="3"><img src="" alt="{{ patient.surname}} {{ patient.firstname}}"/></td></tr>
+      <tr><th>Prefix:</th><td>{{ patient.prefix }}</td><td rowspan="4"><img src="" alt="{{ patient.surname}} {{ patient.firstname}}"/></td></tr>
       <tr><th>Surname:</th><td>{{ patient.surname }}</td></tr>
       <tr><th>Firstname:</th><td>{{ patient.firstname }}</td></tr>
-      <tr><th>Othername:</th><td>{{ patient.othername }}</td>
-	<td><strong>Encounter:</strong>
-	  {% if not encounter %}
-	  <button id="set-encounter" value="{{ patient.id }}">Start</button>
-	  {% else %}
-	  <span id="encounter">{{ encounter.status }}</span>
-	  <button id="end-encounter" value="{{ encounter.id }}">End</button>
-	  {% endif %}
-      </td></tr>      
+      <tr><th>Othername:</th><td>{{ patient.othername }}</td>	
+      </tr>      
     </tbody>
   </table>
 </div>

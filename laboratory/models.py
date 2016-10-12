@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from encounter.models import Encounter
+from staff.models import Staff
 # Create your models here.
 class DiagnosticServiceSection(models.Model):
     '''Diagnostic Service Station according to FHIR like dermatology, '''
@@ -30,3 +32,18 @@ class Observation(models.Model):
     maximum = models.CharField("Maximum Value", max_length=100, blank=True)
     minimum = models.CharField("Minimum Value", max_length=100, blank=True)
 
+
+class InvestigationStatus(models.Model):
+    pass
+
+class PatientLabInvestigation(models.Model):
+    encounter = models.ForeignKey(Encounter)
+    requestor = models.ForeignKey(Staff, related_name='medical_officer', null=True, blank=True)
+    request_notes = models.TextField("Notes", blank=True, null=True)
+    request_time = models.DateTimeField(auto_now = True)
+    reporter = models.ForeignKey(Staff, null=True, blank=True)
+    report_time = models.DateTimeField(auto_now=True)
+    report_notes = models.TextField("Notes", blank=True, null=True)
+    #status = models.ForeignKey(InvestigationStatus)    
+    date_created = models.DateTimeField(auto_now_add = True)
+    last_modified = models.DateTimeField(auto_now = True)

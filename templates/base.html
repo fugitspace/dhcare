@@ -48,6 +48,10 @@
 	       {% if 'patient' in request.path %} class="list-group-item active" {% else %} class="list-group-item" {% endif %} >
 	      Patient
 	    </a>
+	    <a href="{% url 'encounter:home' %}"
+	      {% if 'encounter' in request.path %} class="list-group-item active" {% else %} class="list-group-item" {% endif %} >
+	      Encounters
+	    </a>
 	    <a href="{% url 'appointment:home' %}"
 	      {% if 'appointment' in request.path %} class="list-group-item active" {% else %} class="list-group-item" {% endif %} >
 	      Appointments

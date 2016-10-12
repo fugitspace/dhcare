@@ -1,5 +1,5 @@
 import json
-from datetime import date
+from datetime import date, datetime
 
 from reportlab.pdfgen import canvas
 
@@ -13,7 +13,7 @@ from person.forms import PersonForm, PersonContactForm, PersonDemographicForm
 from patient.forms import PatientVitalsForm
 from patient.models import Patient, PatientDemographic, PatientContact, Vitals, PatientVitals
 from person.models import Prefix, MaritalStatus, Gender, Religion
-from encounter.models import Encounter
+from encounter.models import Encounter, EncounterStatus
 
 # Create your views here.
 def home(request):
@@ -160,12 +160,20 @@ def create_patient_relative(request):
 def create_patient_vitals(request, patient_id):
     form_title = "Patient Vitals Registration"
     if request.method == 'POST':
+        patient = get_object_or_404(Patient, pk=patient_id)
+        encounter = Encounter()
+        encounter.patient = patient
+        encounter.start_date = datetime.now()
+        encounter.status = EncounterStatus.objects.get(code='in-progress')        
+        encounterObj = encounter.save()
+        
         patientvitals = json.dumps(request.POST)
         print patientvitals
         patientObject = get_object_or_404(Patient, pk=patient_id)
         pVital = PatientVitals()
         pVital.measures = patientvitals
         pVital.patient = patientObject
+        pVital.encounter = encounterObj
         pVital.save()
         return HttpResponseRedirect(reverse('patient:view_patient', args=(patient_id,)))
     else:
