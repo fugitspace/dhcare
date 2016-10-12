@@ -70,7 +70,7 @@ def edit_patient(request, patient_id):
 def view_patient(request, patient_id):
     context = {}
     patient = Patient.objects.get(pk = patient_id)
-    vital_measures = PatientVitals.objects.filter(patient__id__exact=patient_id).order_by('-date_created')[:1]
+    vital_measures = PatientVitals.objects.filter(encounter__patient__id__exact=patient_id).order_by('-date_created')[:1]
     demographic_info = PatientDemographic.objects.filter(person_id__exact=patient_id)
     contact_info = PatientContact.objects.filter(person_id__exact=patient_id)
     relative_info = PatientRelative.objects.filter(person_id__exact=patient_id)
@@ -174,15 +174,15 @@ def create_patient_vitals(request, patient_id):
         encounter.patient = patient
         encounter.start_date = datetime.now()
         encounter.status = EncounterStatus.objects.get(code='in-progress')        
-        encounterObj = encounter.save()
+        encounter.save()
         
         patientvitals = json.dumps(request.POST)
         print patientvitals
         patientObject = get_object_or_404(Patient, pk=patient_id)
         pVital = PatientVitals()
         pVital.measures = patientvitals
-        pVital.patient = patientObject
-        pVital.encounter = encounterObj
+        #pVital.patient = patientObject # vitals belong to an encounter which belongs to a person
+        pVital.encounter = encounter
         pVital.save()
         return HttpResponseRedirect(reverse('patient:view_patient', args=(patient_id,)))
     else:

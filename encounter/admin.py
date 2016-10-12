@@ -10,7 +10,7 @@ class EncounterAdmin(admin.ModelAdmin):
     list_display = ['patient', 'status', 'start_date', 'end_date']
 
 class PatientVitalsAdmin(admin.ModelAdmin):
-    list_display = ['patient', 'measures']
+    list_display = ['encounter', 'measures']
 
 class VitalsAdmin(admin.ModelAdmin):
     list_display = ['name', 'active']

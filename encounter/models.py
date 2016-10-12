@@ -31,10 +31,10 @@ class Encounter(models.Model):
     last_modified = models.DateTimeField(auto_now = True, null=True)
     
     def __str__(self):
-        return self.status    
+        return "{} - {}: {}".format(self.patient, self.start_date, self.status)    
 
 class PatientVitals(models.Model):
-    patient = models.ForeignKey(Patient)
+    encounter = models.ForeignKey(Encounter)
     measures = models.CharField(max_length=200)
     date_created = models.DateTimeField(auto_now_add = True)
     last_modified = models.DateTimeField(auto_now = True)
