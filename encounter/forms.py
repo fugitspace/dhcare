@@ -1,5 +1,5 @@
 from django.forms import ModelForm, Textarea, TextInput, Select
-from patient.models import PatientVitals, Vitals
+from encounter.models import PatientVitals, Vitals
 
 class PatientVitalsForm(ModelForm):
     vitals = Vitals.objects.filter(active__exact = 1)
