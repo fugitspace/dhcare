@@ -18,6 +18,16 @@
       <tr><th>Surname:</th><td>{{ patient.surname }}</td></tr>
       <tr><th>Firstname:</th><td>{{ patient.firstname }}</td></tr>
       <tr><th>Othername:</th><td>{{ patient.othername }}</td>	
+      </tr>
+      <tr>
+	<td colspan="3" class="text-right">
+	  <a href="#">
+	    <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	  </a> &nbsp;
+	  <a href="{% url 'patient:edit_patient' patient.id %}">
+	    <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	  </a>
+	</td>
       </tr>      
     </tbody>
   </table>
