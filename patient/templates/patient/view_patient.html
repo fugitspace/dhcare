@@ -33,6 +33,16 @@
       <tr><th>{{ measure }}</th><td>{{ value }}</td></tr>
       {% endfor %}
       <tr><th>Date Recorded:</th><td>{{ record_date }}</td></tr> {# |timezone:"Africa/Nairobi" #}
+      <tr>
+	<td colspan="2" class="text-right">
+	  <a href="#">
+	    <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	  </a> &nbsp;
+	  <a href="{% url 'patient:edit_patient_vitals' patient_vitals_id %}">
+	    <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	  </a>
+	</td>	
+      </tr>
     </tbody>
   </table>
 </div>
@@ -48,7 +58,17 @@
       <tr><th>Gender</th><td>{{ demographic.gender }}</td></tr>
       <tr><th>Date of Birth</th><td>{{ demographic.birthdate }}</td></tr>
       <tr><th>Marital Status</th><td>{{ demographic.marital_status }}</td></tr>
-      <tr><th>Religion</th><td>{{ demographic.religion }}</td></tr>            
+      <tr><th>Religion</th><td>{{ demographic.religion }}</td></tr>
+      <tr>
+	<td colspan="2" class="text-right">
+	  <a href="#">
+	    <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	  </a> &nbsp;
+	  <a href="{% url 'patient:edit_patient_demographic' demographic.id %}">
+	    <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	  </a>
+	</td>	
+      </tr>            
     </tbody>
   </table>
 </div>
@@ -65,7 +85,17 @@
       <tr><th>Alternative Mobile</th><td>{{ contact.alt_mobile }}</td></tr>
       <tr><th>Telephone</th><td>{{ contact.telephone }}</td></tr>
       <tr><th>Email</th><td>{{ contact.email }}</td></tr>
-      <tr><th>Mailing Address</th><td>{{ contact.mailing_address|linebreaks }}</td></tr>            
+      <tr><th>Mailing Address</th><td>{{ contact.mailing_address|linebreaks }}</td></tr>
+      <tr>
+	<td colspan="2" class="text-right">
+	  <a href="#">
+	    <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	  </a> &nbsp;
+	  <a href="{% url 'patient:edit_patient_contact' contact.id %}">
+	    <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	  </a>
+	</td>	
+      </tr>
     </tbody>
   </table>
 </div>
@@ -84,7 +114,17 @@
       <tr><th>Alternative Mobile</th><td>{{ relative.alt_mobile }}</td></tr>
       <tr><th>Telephone</th><td>{{ relative.telephone }}</td></tr>
       <tr><th>Email</th><td>{{ relative.email }}</td></tr>
-      <tr><th>Mailing Address</th><td>{{ relative.mailing_address|linebreaks }}</td></tr>            
+      <tr><th>Mailing Address</th><td>{{ relative.mailing_address|linebreaks }}</td></tr>
+      <tr>
+	<td colspan="2" class="text-right">
+	  <a href="#">
+	    <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	  </a> &nbsp;
+	  <a href="{% url 'patient:edit_patient_relative' relative.id %}">
+	    <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	  </a>
+	</td>	
+      </tr>
     </tbody>
   </table>
 </div>

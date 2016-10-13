@@ -35,6 +35,42 @@ def search_patient(request):
     else:
         print "request was not ajax"
             
+def view_patient(request, patient_id):
+    context = {}
+    patient = Patient.objects.get(pk = patient_id)
+    vital_measures = PatientVitals.objects.filter(encounter__patient__id__exact=patient_id).order_by('-date_created')[:1]
+    demographic_info = PatientDemographic.objects.filter(person_id__exact=patient_id)
+    contact_info = PatientContact.objects.filter(person_id__exact=patient_id)
+    relative_info = PatientRelative.objects.filter(person_id__exact=patient_id)
+    encounter = Encounter.objects.filter(patient_id__exact = patient_id).order_by('-start_date')[:1]
+        
+    context['patient'] = patient
+
+    if len(contact_info) != 0:        
+        context['contact'] = contact_info[0]
+
+    if len(relative_info) != 0:        
+        context['relative'] = relative_info[0]
+        
+    if len(encounter) != 0:        
+        context['encounter'] = encounter[0]
+        
+    if len(demographic_info) != 0:        
+        context['demographic'] = demographic_info[0]
+        
+    if len(vital_measures) != 0:
+        record_date = vital_measures[0].date_created
+        v_id = vital_measures[0].id
+        vital_measures = json.loads(vital_measures[0].measures)
+        patient_vitals = {}
+        for key, measure in vital_measures.iteritems():
+            if key != 'csrfmiddlewaretoken':
+                patient_vitals[get_object_or_404(Vitals, pk=int(key)).name] = measure
+        context['patient_vitals'] = patient_vitals
+        context['patient_vitals_id'] = v_id
+        context['record_date'] = record_date          
+    return render(request, 'patient/view_patient.html', context)
+
 
 def create_patient(request):
     form_title = "Add New Patient"
@@ -67,40 +103,6 @@ def edit_patient(request, patient_id):
         
     return render(request, 'patient/create_patient.html', {'form':form, 'form_title':form_title})
 
-def view_patient(request, patient_id):
-    context = {}
-    patient = Patient.objects.get(pk = patient_id)
-    vital_measures = PatientVitals.objects.filter(encounter__patient__id__exact=patient_id).order_by('-date_created')[:1]
-    demographic_info = PatientDemographic.objects.filter(person_id__exact=patient_id)
-    contact_info = PatientContact.objects.filter(person_id__exact=patient_id)
-    relative_info = PatientRelative.objects.filter(person_id__exact=patient_id)
-    encounter = Encounter.objects.filter(patient_id__exact = patient_id).order_by('-start_date')[:1]
-        
-    context['patient'] = patient
-
-    if len(contact_info) != 0:        
-        context['contact'] = contact_info[0]
-
-    if len(relative_info) != 0:        
-        context['relative'] = relative_info[0]
-        
-    if len(encounter) != 0:        
-        context['encounter'] = encounter[0]
-        
-    if len(demographic_info) != 0:        
-        context['demographic'] = demographic_info[0]
-        
-    if len(vital_measures) != 0:
-        record_date = vital_measures[0].date_created        
-        vital_measures = json.loads(vital_measures[0].measures)
-        patient_vitals = {}
-        for key, measure in vital_measures.iteritems():
-            if key != 'csrfmiddlewaretoken':
-                patient_vitals[get_object_or_404(Vitals, pk=int(key)).name] = measure
-        context['patient_vitals'] = patient_vitals
-        context['record_date'] = record_date          
-    return render(request, 'patient/view_patient.html', context)
-
 
 ################ Patient Demographic ###########################
 
@@ -122,6 +124,19 @@ def create_patient_demographic(request, patient_id):
         
     return render(request, 'patient/create_patient_demographic.html', {'form':form, 'form_title':form_title}) 
 
+def edit_patient_demographic(request, demographic_id):
+    form_title = "Edit Patient Demographic"
+    demographic = get_object_or_404(PatientDemographic, pk=demographic_id)
+    if request.method == 'POST':
+        form = PersonDemographicForm(request.POST, instance = demographic)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('patient:view_patient', args=(demographic.person.id,)))
+    else:
+        form = PersonDemographicForm(instance = demographic)
+        
+    return render(request, 'patient/create_patient_demographic.html', {'form':form, 'form_title':form_title})
+
 def create_patient_contact(request, patient_id):
     form_title = "Patient Contact"
     if request.method == 'POST':
@@ -140,6 +155,20 @@ def create_patient_contact(request, patient_id):
     else:
         form = PersonContactForm()
         
+    return render(request, 'patient/create_patient_contact.html', {'form':form, 'form_title':form_title})
+
+
+def edit_patient_contact(request, contact_id):
+    form_title = "Edit Patient Contact"
+    contact = get_object_or_404(PatientContact, pk=contact_id)
+    if request.method == 'POST':
+        form = PersonContactForm(request.POST, instance = contact)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('patient:view_patient', args=(contact.person.id,)))
+    else:
+        form = PersonContactForm(instance = contact)
+
     return render(request, 'patient/create_patient_contact.html', {'form':form, 'form_title':form_title})
 
 def create_patient_relative(request, patient_id):
@@ -164,8 +193,43 @@ def create_patient_relative(request, patient_id):
         
     return render(request, 'patient/create_patient_relative.html', {'form':form, 'form_title':form_title}) 
 
+def edit_patient_relative(request, relative_id):
+    form_title = "Patient Relative"
+    relative = get_object_or_404(PatientRelative, pk = relative_id)
+    if request.method == 'POST':
+        form = PersonRelativeForm(request.POST, instance = relative)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('patient:view_patient', args=(relative.person.id,)))
+    else:
+        form = PersonRelativeForm(instance = relative)
+        
+    return render(request, 'patient/create_patient_relative.html', {'form':form, 'form_title':form_title})
 
-def create_patient_vitals(request, patient_id):
+
+def edit_patient_vitals(request, patient_vitals_id):
+    form_title = "Patient Vitals Registration"
+    patient_vitals = get_object_or_404(PatientVitals, pk = patient_vitals_id)
+    if request.method == 'POST':        
+        patientvitals = json.dumps(request.POST)        
+        patient_vitals.measures = patientvitals        
+        patient_vitals.save(update_fields=['measures'])
+        return HttpResponseRedirect(reverse('patient:view_patient', args=(patient_vitals.encounter.patient.id,)))
+    else:
+        vitals = Vitals.objects.all()
+        fields = {}
+        for vital in vitals:
+            fields[vital.id] = vital.name
+        print(patient_vitals.measures)
+        measures = json.loads(patient_vitals.measures)
+        vital_fields = {}
+        for vital_key, value in measures.iteritems():
+            if vital_key != 'csrfmiddlewaretoken':
+                vital_fields[int(vital_key)] = {'label':fields[int(vital_key)], 'value':value}
+        
+    return render(request, 'patient/edit_patient_vitals.html', {'form':vital_fields, 'edit':1, 'form_title':form_title}) 
+
+def create_patient_vitals(request, patient_vitals_id):
     form_title = "Patient Vitals Registration"
     if request.method == 'POST':
         patient = get_object_or_404(Patient, pk=patient_id)

@@ -23,8 +23,12 @@ urlpatterns = [
     url(r'^view/(?P<patient_id>[0-9]+)/$', views.view_patient, name='view_patient'),
     url(r'^edit/(?P<patient_id>[0-9]+)/$', views.edit_patient, name='edit_patient'),
     url(r'^(?P<patient_id>[0-9]+)/demographic/$', views.create_patient_demographic, name='create_patient_demographic'),
+    url(r'^edit/(?P<demographic_id>[0-9]+)/demographic/$', views.edit_patient_demographic, name='edit_patient_demographic'),    
     url(r'^(?P<patient_id>[0-9]+)/contact/$', views.create_patient_contact, name='create_patient_contact'),
+    url(r'^edit/(?P<contact_id>[0-9]+)/contact/$', views.edit_patient_contact, name='edit_patient_contact'),
     url(r'^(?P<patient_id>[0-9]+)/vitals/$', views.create_patient_vitals, name='create_patient_vitals'),
+    url(r'^edit/(?P<patient_vitals_id>[0-9]+)/vitals/$', views.edit_patient_vitals, name='edit_patient_vitals'),
     url(r'^(?P<patient_id>[0-9]+)/index_card/$', views.patient_index_card, name='create_patient_index_card'),
     url(r'^(?P<patient_id>[0-9]+)/relative/$', views.create_patient_relative, name='create_patient_relative'),
+    url(r'^edit/(?P<relative_id>[0-9]+)/relative/$', views.edit_patient_relative, name='edit_patient_relative'),
 ]
