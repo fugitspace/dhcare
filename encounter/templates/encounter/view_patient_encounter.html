@@ -2,7 +2,7 @@
 {% load l10n %}
 {% load tz %}
 {% block sitehead %}
-<title>dcare: Patient Management</title>
+<title>dcare: Patient Encounter Management</title>
 {% endblock %}
 
 
@@ -29,27 +29,87 @@
   <div class="panel-heading">
     Patient Clinical Information
   </div>
-  <table class="table">
-    <tbody>      
-      <tr><th>History</th><td>{{ history.history|linebreaks }}</td></tr>
-      {% if exam %}
-      <tr><th>Examination</th><td>{{ exam.examination|linebreaks }}</td></tr>
-      <tr><th>Notes</th><td>{{ exam.notes|linebreaks }}</td></tr>
-      {% endif %}
-      {% if investigation %}
-      <tr><th>Examination</th><td>{{ exam.examination|linebreaks }}</td></tr>
-      <tr><th>Notes</th><td>{{ exam.notes|linebreaks }}</td></tr>
-      {% endif %}
-      {% if diagnosis %}
-      <tr><th>Diagnosis</th><td>{{ diagnosis.diagnosis|linebreaks }}</td></tr>
-      <tr><th>Notes</th><td>{{ diagnosis.notes|linebreaks }}</td></tr>
-      {% endif %}
-      {% if treatment %}
-      <tr><th>Treatment</th><td>{{ treatment.examination|linebreaks }}</td></tr>
-      <tr><th>Notes</th><td>{{ treament.notes|linebreaks }}</td></tr>
-      {% endif %}
-    </tbody>
-  </table>
+  <ul class="list-group">
+    <li class="list-group-item list-group-item">
+      <b>History</b>{{ history.history|linebreaks }}
+      <div class="text-right">
+	<a href="#">
+	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	</a> &nbsp;
+	<a href="{% url 'patient:edit_patient' patient.id %}">
+	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	</a>
+      </div>
+    </li>
+  </ul>
+  {% if exam %}
+  <ul class="list-group">
+    <li class="list-group-item list-group-item">
+      <b>Examination</b>{{ exam.examination|linebreaks }}
+      <b>Notes</b>{{ exam.notes|linebreaks }}
+      <div class="text-right">
+	<a href="#">
+	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	</a> &nbsp;
+	<a href="{% url 'patient:edit_patient' patient.id %}">
+	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	</a>
+      </div>
+    </li>
+  </ul>
+  {% endif %}
+  
+  {% if investigation %}
+  <ul class="list-group">
+    <li class="list-group-item list-group-item">      
+      <b>Investigation</b>{{ investigation.investigation|linebreaks }}
+      <b>Notes</b>{{ investigation.notes|linebreaks }}
+      <div class="text-right">
+	<a href="#">
+	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	</a> &nbsp;
+	<a href="{% url 'patient:edit_patient' patient.id %}">
+	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	</a>
+      </div>
+    </li>    
+  </ul>
+  {% endif %}
+  
+  {% if diagnosis %}
+  <ul class="list-group">
+    <li class="list-group-item list-group-item">  
+	<b>Diagnosis</b>{{ diagnosis.diagnosis|linebreaks }}      
+	<b>Notes</b>{{ diagnosis.notes|linebreaks }}
+	<div class="text-right">
+	<a href="#">
+	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	</a> &nbsp;
+	<a href="{% url 'patient:edit_patient' patient.id %}">
+	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	</a>
+      </div>
+    </li>
+  </ul>
+  {% endif %}
+  
+  {% if treatment %}
+  <ul class="list-group">
+    <li class="list-group-item list-group-item">
+      <b>Treatment</b>{{ treatment.examination|linebreaks }}
+      <b>Notes</b>{{ treament.notes|linebreaks }}
+      <div class="text-right">
+	<a href="#">
+	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	</a> &nbsp;
+	<a href="{% url 'patient:edit_patient' patient.id %}">
+	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	</a>
+      </div>
+    </li>    
+  </ul>
+  {% endif %}
+  
 </div>
 {% endif %}
 
