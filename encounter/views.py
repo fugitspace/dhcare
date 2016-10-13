@@ -57,6 +57,19 @@ def create_patient_encounter_history(request, encounter_id):
         
     return render(request, 'encounter/create_patient_encounter.html', {'form':form, 'form_title':form_title})
 
+def edit_patient_encounter_history(request, history_id):
+    form_title = "Edit Patient History"
+    history = EncounterPatientHistory.objects.get(pk = history_id)
+    if request.method == 'POST':
+        form = PatientEncounterHistoryForm(request.POST, instance = history)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('encounter:view_patient_encounter', args=(history.encounter.id,)))
+    else:
+        form = PatientEncounterHistoryForm(instance = history)
+        
+    return render(request, 'encounter/create_patient_encounter.html', {'form':form, 'form_title':form_title})
+
 def create_patient_encounter_exam(request, encounter_id):
     form_title = "Patient Exam"
     if request.method == 'POST':
@@ -73,6 +86,18 @@ def create_patient_encounter_exam(request, encounter_id):
         
     return render(request, 'encounter/create_patient_encounter.html', {'form':form, 'form_title':form_title})
 
+def edit_patient_encounter_exam(request, exam_id):
+    form_title = "Edit Patient Exam"
+    exam = EncounterPatientExamination.objects.get(pk = exam_id)
+    if request.method == 'POST':
+        form = PatientEncounterExamForm(request.POST, instance = exam)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('encounter:view_patient_encounter', args=(exam.encounter.id,)))
+    else:
+        form = PatientEncounterExamForm(instance = exam)
+        
+    return render(request, 'encounter/create_patient_encounter.html', {'form':form, 'form_title':form_title})
 
 def create_patient_encounter_diagnosis(request, encounter_id):
     form_title = "Patient Diagnosis"
@@ -87,6 +112,19 @@ def create_patient_encounter_diagnosis(request, encounter_id):
             return HttpResponseRedirect(reverse('encounter:view_patient_encounter', args=(encounter_id,)))
     else:
         form = EncounterDiagnosisForm()
+        
+    return render(request, 'encounter/create_patient_encounter.html', {'form':form, 'form_title':form_title})
+
+def edit_patient_encounter_diagnosis(request, diagnosis_id):
+    form_title = "Edit Patient Diagnosis"
+    diagnosis = EncounterDiagnosis.objects.get(pk = diagnosis_id)
+    if request.method == 'POST':
+        form = EncounterDiagnosisForm(request.POST, instance = diagnosis)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('encounter:view_patient_encounter', args=(diagnosis.encounter.id,)))
+    else:
+        form = EncounterDiagnosisForm(instance = diagnosis)
         
     return render(request, 'encounter/create_patient_encounter.html', {'form':form, 'form_title':form_title})
 

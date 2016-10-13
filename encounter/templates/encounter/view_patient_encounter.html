@@ -36,7 +36,7 @@
 	<a href="#">
 	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 	</a> &nbsp;
-	<a href="{% url 'patient:edit_patient' patient.id %}">
+	<a href="{% url 'encounter:edit_patient_encounter_history' history.id %}">
 	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 	</a>
       </div>
@@ -51,7 +51,7 @@
 	<a href="#">
 	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 	</a> &nbsp;
-	<a href="{% url 'patient:edit_patient' patient.id %}">
+	<a href="{% url 'encounter:edit_patient_encounter_exam' exam.id %}">
 	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 	</a>
       </div>
@@ -68,7 +68,7 @@
 	<a href="#">
 	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 	</a> &nbsp;
-	<a href="{% url 'patient:edit_patient' patient.id %}">
+	<a href="{% url 'encounter:edit_patient_encounter_investigation' investigation.id %}">
 	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 	</a>
       </div>
@@ -85,7 +85,7 @@
 	<a href="#">
 	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 	</a> &nbsp;
-	<a href="{% url 'patient:edit_patient' patient.id %}">
+	<a href="{% url 'encounter:edit_patient_encounter_diagnosis' diagnosis.id %}">
 	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 	</a>
       </div>
@@ -102,7 +102,7 @@
 	<a href="#">
 	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 	</a> &nbsp;
-	<a href="{% url 'patient:edit_patient' patient.id %}">
+	<a href="{% url 'encounter:edit_patient_encounter_treatment' treatment.id %}">
 	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 	</a>
       </div>
