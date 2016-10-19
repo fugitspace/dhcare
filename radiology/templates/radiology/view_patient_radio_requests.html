@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load l10n %}
+{% load tz %}
+{% block sitehead %}
+<title>dcare: Patient Encounter Management</title>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span style="float:left">Patient ID: <i>{{ patient.id_number }}</i></span> Encounter Started: <i>{{ record_date }}</i>
+  </div>
+  <table class="table">
+    <tbody>
+      <tr>
+	<th>Prefix:</th><td>{{ patient.prefix }}</td><td rowspan="4"><img src="" alt="{{ patient.surname}} {{ patient.firstname}}"/></td>
+      </tr>
+      <tr><th>Surname:</th><td>{{ patient.surname }}</td></tr>
+      <tr><th>Firstname:</th><td>{{ patient.firstname }}</td></tr>
+      <tr><th>Othername:</th><td>{{ patient.othername }}</td>
+      </tr>      
+    </tbody>
+  </table>
+</div>
+{% if radio_investigation %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Patient Radiology Request Information
+  </div>
+  
+  <ul class="list-group">
+    <li class="list-group-item list-group-item">
+      <p><b>Requested by:</b> {{ radio_investigation.requestor.first_name }} {{ radio_investigation.requestor.last_name }}<br />
+	<b>Request Date and Time:</b> {{ radio_investigation.date_created }}
+      </p>      
+      <b>Clinical Summary</b>{{ radio_investigation.clinical_summary|linebreaks }}
+      <b>X-Ray requested/USS</b>{{ radio_investigation.request_notes|linebreaks }}
+      {% if radio_report %}
+      <b>Report</b>{{ radio_report.report|linebreaks }}
+      <b>Radiologist/Radiographer</b>{{ radio_report.reporter.first_name|linebreaks }}
+      <b>Date: </b>{{ radio_report.date_created}}
+      {% endif %}
+
+      {% if form %}
+      <form method="post">
+	{% csrf_token %}
+	{% for field in form %}
+	<p>
+	  <div class="input-group">
+	    <td><div class="input-group-addon">{{ field.label_tag }}</div></td>
+	    <td>{{ field }}</td>
+	  </div>
+	</p>
+	{% endfor %}
+	<p>      
+	  <input type="submit" class="btn btn-primary" value="Save" />
+	</p>
+
+      </form>
+      {% endif %}
+      <div class="text-right">
+	<a href="#">
+	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	</a> &nbsp;
+	<a href="{#% url 'encounter:edit_patient_encounter_investigation' investigation.id %#}">
+	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	</a>
+      </div>
+    </li>    
+  </ul>
+  {% endif %}
+  
+</div>
+{% endblock %}
+
+{% if record_date %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Patient Vitals Information
+  </div>
+  <table class="table">
+    <tbody>
+      {% for measure, value in patient_vitals.iteritems %}
+      <tr><th>{{ measure }}</th><td>{{ value }}</td></tr>
+      {% endfor %}
+      <tr><th>Date Recorded:</th><td>{{ record_date }}</td></tr> {# |timezone:"Africa/Nairobi" #}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+
+{% block right_menu %}
+
+<div>&nbsp;</div>
+<ul class="list-group">
+  <li class="list-group-item">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Patient Search">
+      <span class="input-group-btn">
+	<button class="btn btn-default" type="button"><span title="Find" class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+      </span>
+    </div>
+    <div>&nbsp;</div>
+  </li>
+  
+  {% if not history %}
+  <li class="list-group-item"><a href="{#% url 'encounter:create_patient_encounter_history' encounter.id %#}">Patient History</a></li>
+  {% endif %}
+  {% if not exam %}
+  <li class="list-group-item"><a href="{#% url 'encounter:create_patient_encounter_exam' encounter.id %#}">Examination</a></li>
+  {% endif %}
+  {% if not lab_investigation %}
+  <li class="list-group-item"><a href="{#% url 'patient:create_patient_encounter_investigation' encounter.id %#}">Lab Investigation</a></li>
+  {% endif %}
+  {% if not radio_investigation %}
+  <li class="list-group-item"><a href="{% url 'radiology:create_radiology_request' encounter.id %}">Radiology Investigation</a></li>
+  {% endif %}
+  
+</ul>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript">  
+  $( document ).ready( function() {
+  $( "#set-encounter" ).click( function() {  
+  set_encounter();
+  });
+  });
+
+  function set_encounter(){
+  $.ajax({
+  url: "{#% url 'encounter:new_encounter' patient.id %#}",
+  type: "GET",
+  // data: {q: $( "#set-encounter" ).val()},
+
+  // handle a successful response
+  success : function(json) {
+  $("#set-encounter").remove();
+  $("#encounter").text(json.status); // set value for encounter
+  $("#end-encounter").val(json.id);
+  // dataType: "html"
+  },
+  })
+  }
+  
+  $( document ).ajaxStart( function() {
+  $( "#spinner" ).show();
+  }).ajaxStop( function() {
+  $( "#spinner" ).hide();
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block sitehead %}
+<title>dcare: Patient Investigation Management</title>
+{% endblock %}
+
+
+{% block content %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    {{form_title}}.
+  </div>  
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="sr-only" for="patientContact">Radiology Request</label>
+      {% for field in form %}
+      <p>
+	<div class="input-group">
+	  <td><div class="input-group-addon">{{field.label_tag}}</div></td>
+	  <td>{{ field }}</td>
+	</div>
+      </p>
+      {% endfor %}
+      <p>      
+	<input type="submit" class="btn btn-primary" value="Save" />
+      </p>    
+    </div>
+  </form>
+</div>
+
+{% endblock %}
+
+
+{% block right_menu %}
+
+<div>&nbsp;</div>
+<ul class="list-group">
+  <li class="list-group-item">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Patient Search">
+      <span class="input-group-btn">
+	<button class="btn btn-default" type="button"><span title="Find" class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+      </span>
+    </div>
+    <div>&nbsp;</div>
+  </li>
+  
+  <li class="list-group-item"><a href="{% url 'patient:create_patient'%}">Register new patient</a></li>
+  <li class="list-group-item"><a href="#">Admission</a></li>
+</ul>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript">
+  /*
+  * For displaying the date picker
+  */
+  
+  $( function() {
+  $( "#birthdate" ).datepicker({
+  changeMonth: true,
+  changeYear: true,
+  dateFormat: "yy-mm-dd"
+  });
+  } );
+</script>
+{% endblock %}

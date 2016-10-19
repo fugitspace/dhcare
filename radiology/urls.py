@@ -17,5 +17,8 @@ from radiology import views
 
 app_name = 'radiology'
 urlpatterns = [
-    url(r'^$', views.home, name='home')
+    url(r'^$', views.home, name='home'),
+    url(r'^encounter/(?P<encounter_id>[0-9]+)/$', views.view_patient_radio_requests, name='view_patient_radio_requests'),
+    url(r'^encounter/(?P<encounter_id>[0-9]+)/request/$', views.create_radiology_request, name='create_radiology_request'),
+    url(r'^request/(?P<request_id>[0-9]+)/edit/$', views.edit_radiology_request, name='edit_radiology_request'),
 ]

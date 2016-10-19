@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load l10n %}
+{% load tz %}
+{% load staticfiles %}
+{% block sitehead %}
+<title>dcare: Patient Investigation Management</title>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+  <div class="input-group">
+    <input type="text" class="form-control" id="q" placeholder="Patient Search" />
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="button"><span title="Find" id="search_submit" class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </span>
+  </div>
+  <span id="spinner"><img src"{% static 'dcare/img/Ajax-loader.gif' %}" /></span>
+</div>
+<div id="result">
+  <div class="row">
+    <table class="table table-hover">
+      <h3>Pending Requests</h3>
+      <thead>
+	<tr><th>ID Number</th><th>Firstname</th><th>Surname</th><th>Request Time</th><th colspan="2">Action</th></tr>
+      </thead>
+      <tbody>
+	{% for request in pending_requests %}
+	<tr>
+	  <td>{{ request.encounter.patient.id_number }}</td>
+	  <td>{{ request.encounter.patient.firstname }}</td>
+	  <td> {{ request.encounter.patient.surname }} </td>
+	  <td> {{ request.date_created }} - {{ request.request_time }}</td> {#|timezone:"Africa/Nairobi"#}
+	  
+	  <td>
+	    <a href="{% url 'radiology:view_patient_radio_requests' request.encounter.id %}">
+	      <span title="View" class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+	    </a>
+	  </td>
+	</tr>
+	{% endfor %}
+      </tbody>    
+    </table>
+  </div>
+</div>
+
+
+{% endblock %}
+
+
+
+
+{% block scripts %}
+{{ block.super }}
+
+<script type="text/javascript">  
+  $( document ).ready( function() {
+  $( "#search_submit" ).click( function() {
+  q = $( "#q" ).val();
+
+  search_patients();
+  $( "#results" ).html( "&nbsp;" ).load("/patient/search_patient/?q=" + q );
+  });
+  });
+
+  function search_patients(){
+  $.ajax({
+  url: "{% url 'patient:search_patient' %}",
+  type: "GET",
+  data: {q: $( "#q" ).val()},
+
+  // handle a successful response
+  success : function(data) {
+  $("#result").html(data); // remove the value from the input
+  dataType: "html"
+  },
+  })
+  }
+  
+  $( document ).ajaxStart( function() {
+  $( "#spinner" ).show();
+  }).ajaxStop( function() {
+  $( "#spinner" ).hide();
+  });
+</script>
+
+{% endblock %}
