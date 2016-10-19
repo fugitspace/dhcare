@@ -61,7 +61,12 @@
   
   {% if radio_investigation %}
   <ul class="list-group">
-    <li class="list-group-item list-group-item">      
+    <li class="list-group-item list-group-item">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+	  Patient Radiology Investigation
+	</div>
+      </div>      
       <b>Clinical Summary</b>{{ radio_investigation.clinical_summary|linebreaks }}
       <b>X-Ray Request/USS</b>{{ radio_investigation.request_notes|linebreaks }}
       {% if radio_report %}
