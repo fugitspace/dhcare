@@ -59,19 +59,26 @@
   </ul>
   {% endif %}
   
-  {% if investigation %}
+  {% if radio_investigation %}
   <ul class="list-group">
     <li class="list-group-item list-group-item">      
-      <b>Investigation</b>{{ investigation.investigation|linebreaks }}
-      <b>Notes</b>{{ investigation.notes|linebreaks }}
+      <b>Clinical Summary</b>{{ radio_investigation.clinical_summary|linebreaks }}
+      <b>X-Ray Request/USS</b>{{ radio_investigation.request_notes|linebreaks }}
+      {% if radio_report %}
+      <b>Report </b>{{ radio_report.report|linebreaks }}
+      <b>Radiologist/Radiographer </b>{{ radio_report.reporter|linebreaks }}
+      <b>Report Date </b>{{ radio_report.date_created|linebreaks }}
+      {% endif %}
+      {% if not radio_report %} {# hide option to edit once the report has been submitted#}
       <div class="text-right">
 	<a href="#">
 	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 	</a> &nbsp;
-	<a href="{% url 'encounter:edit_patient_encounter_investigation' investigation.id %}">
+	<a href="{#% url 'radiology:edit_patient_radio_request' investigation.id %#}">
 	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 	</a>
       </div>
+      {% endif %}
     </li>    
   </ul>
   {% endif %}

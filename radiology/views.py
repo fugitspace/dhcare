@@ -38,6 +38,20 @@ def view_patient_radio_requests(request, encounter_id):
         context['radio_report'] = radio_report[0]
     return render(request, 'radiology/view_patient_radio_requests.html', context)
 
+def edit_radiology_report(request, report_id):
+    form_title = "Edit Radiology Report"
+    report = PatientRadioReport.objects.get(pk = report_id)
+    if request.method == 'POST':
+        form = PatientRadioReportForm(request.POST, instance = report)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('radiology:view_patient_radio_request', args=(report.request.encounter.id,)))
+    else:
+        form = PatientRadioReportForm(instance = report)
+        
+    return render(request, 'radiology/view_patient_radio_requests.html', {'form':form, 'form_title':form_title})
+
+
 def create_radiology_request(request, encounter_id):
     form_title = "Radiology Request"
     if request.method == 'POST':

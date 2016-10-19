@@ -31,7 +31,9 @@ def view_patient_encounter(request, encounter_id):
         context['exam'] = exam[0]
     if len(radio_investigation) != 0:
         context['radio_investigation'] = radio_investigation[0]
-        
+        report = PatientRadioReport.objects.filter(request_id__exact = radio_investigation[0].id)
+        if len(report) > 0:
+            context['radio_report'] = report[0]
     if len(diagnosis) != 0:
         context['diagnosis'] = diagnosis[0]
 
