@@ -74,7 +74,7 @@
 	<a href="#">
 	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 	</a> &nbsp;
-	<a href="{#% url 'radiology:edit_patient_radio_request' investigation.id %#}">
+	<a href="{% url 'radiology:edit_radiology_request' radio_investigation.id %}">
 	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
 	</a>
       </div>

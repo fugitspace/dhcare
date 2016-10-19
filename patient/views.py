@@ -254,8 +254,6 @@ def create_patient_vitals(request, patient_vitals_id):
             vital_fields[vital.id] = vital.name
         
     return render(request, 'patient/create_patient_vitals.html', {'form':vital_fields, 'form_title':form_title}) 
-
-
 def patient_index_card(request, patient_id):
     patientObj = Patient.objects.get(pk=patient_id)
     full_name = patientObj.surname+"_"+patientObj.firstname+".pdf"
