@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from encounter.models import Encounter, EncounterStatus, PatientVitals, Vitals, EncounterPatientHistory, EncounterPatientExamination, EncounterDiagnosis
 from encounter.forms import PatientEncounterExamForm, PatientEncounterHistoryForm, EncounterDiagnosisForm
 from patient.models import Patient
-
+from radiology.models import PatientRadioRequest, PatientRadioReport, RequestStatus
 # Create your views here.
 def home(request):
     recently_added = Encounter.objects.order_by('-date_created')[:10]        
@@ -22,12 +22,16 @@ def view_patient_encounter(request, encounter_id):
     history = EncounterPatientHistory.objects.filter(encounter_id__exact=encounter_id).order_by('-date_created')[:1]
     exam = EncounterPatientExamination.objects.filter(encounter_id__exact=encounter_id).order_by('-date_created')[:1]
     diagnosis = EncounterDiagnosis.objects.filter(encounter_id__exact=encounter_id).order_by('-date_created')[:1]
+    radio_investigation = PatientRadioRequest.objects.filter(encounter_id__exact=encounter_id, request_status__code__iexact='new').order_by('-date_created', 'request_time')[:1]
     context['patient'] = patient
     context['encounter'] = encounter
     if len(history) != 0:
         context['history'] = history[0]
     if len(exam) != 0:
         context['exam'] = exam[0]
+    if len(radio_investigation) != 0:
+        context['radio_investigation'] = radio_investigation[0]
+        
     if len(diagnosis) != 0:
         context['diagnosis'] = diagnosis[0]
 

@@ -14,7 +14,18 @@
   </div>
   <table class="table">
     <tbody>
-      <tr><th>Prefix:</th><td>{{ patient.prefix }}</td><td rowspan="4"><img src="" alt="{{ patient.surname}} {{ patient.firstname}}"/></td></tr>
+      <tr>
+	<th>Prefix:</th><td>{{ patient.prefix }}</td>
+	<td rowspan="4">
+	  {% if not photo %}
+	  <div class="dropzone" data-width="50" data-height="50" data-resize="true" data-url="canvas.php" style="width: 100%;">
+	    <input type="file" name="thumb" />
+	    </div>
+	  {% else %}
+	  <img src="" alt="{{ patient.surname}} {{ patient.firstname}}"/>
+	  {% endif %}
+	</td>
+      </tr>
       <tr><th>Surname:</th><td>{{ patient.surname }}</td></tr>
       <tr><th>Firstname:</th><td>{{ patient.firstname }}</td></tr>
       <tr><th>Othername:</th><td>{{ patient.othername }}</td>	
