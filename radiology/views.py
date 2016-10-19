@@ -40,16 +40,26 @@ def view_patient_radio_requests(request, encounter_id):
 
 def edit_radiology_report(request, report_id):
     form_title = "Edit Radiology Report"
+    
     report = PatientRadioReport.objects.get(pk = report_id)
+    radio_request = report.request
+    encounter = radio_request.encounter
+    
     if request.method == 'POST':
         form = PatientRadioReportForm(request.POST, instance = report)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('radiology:view_patient_radio_request', args=(report.request.encounter.id,)))
+            return HttpResponseRedirect(reverse('radiology:view_patient_radio_requests', args=(report.request.encounter.id,)))
     else:
         form = PatientRadioReportForm(instance = report)
-        
-    return render(request, 'radiology/view_patient_radio_requests.html', {'form':form, 'form_title':form_title})
+    context = {
+        'encounter':encounter,
+        'form':form,
+        'form_title':form_title,
+        'patient': encounter.patient,
+        'radio_investigation':radio_request
+    }    
+    return render(request, 'radiology/edit_patient_radio_report.html', context)
 
 
 def create_radiology_request(request, encounter_id):
