@@ -44,13 +44,9 @@ def view_patient_lab_requests(request, encounter_id):
 def create_lab_request(request, encounter_id):
     form_title = "Lab Request"
     if request.method == 'POST':
-        requested_observations = json.dumps(request.POST)
         encounter = get_object_or_404(Encounter, pk=encounter_id)
         labRequest = PatientLabRequest()
-        requests = []
-        for key, value in request.POST.iteritems():
-            if key != 'csrfmiddlewaretoken':
-                requests.append(int(key)) 
+        requests = json.dumps(request.POST)
         labRequest.request = requests        
         labRequest.requestor = request.user
         labRequest.encounter = encounter

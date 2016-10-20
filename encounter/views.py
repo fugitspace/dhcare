@@ -9,6 +9,7 @@ from encounter.models import Encounter, EncounterStatus, PatientVitals, Vitals, 
 from encounter.forms import PatientEncounterExamForm, PatientEncounterHistoryForm, EncounterDiagnosisForm
 from patient.models import Patient
 from radiology.models import PatientRadioRequest, PatientRadioReport, RequestStatus
+from laboratory.models import PatientLabRequest, PatientLabReport, Observation
 # Create your views here.
 def home(request):
     recently_added = Encounter.objects.order_by('-date_created')[:10]        
@@ -23,6 +24,7 @@ def view_patient_encounter(request, encounter_id):
     exam = EncounterPatientExamination.objects.filter(encounter_id__exact=encounter_id).order_by('-date_created')[:1]
     diagnosis = EncounterDiagnosis.objects.filter(encounter_id__exact=encounter_id).order_by('-date_created')[:1]
     radio_investigation = PatientRadioRequest.objects.filter(encounter_id__exact=encounter_id, request_status__code__iexact='new').order_by('-date_created', 'request_time')[:1]
+    lab_request = PatientLabRequest.objects.filter(encounter_id__exact=encounter_id, request_status__code__iexact='new').order_by('-date_created', 'request_time')[:1]
     context['patient'] = patient
     context['encounter'] = encounter
     if len(history) != 0:
@@ -34,6 +36,22 @@ def view_patient_encounter(request, encounter_id):
         report = PatientRadioReport.objects.filter(request_id__exact = radio_investigation[0].id)
         if len(report) > 0:
             context['radio_report'] = report[0]
+    if len(lab_request) != 0:
+        obs = json.loads(lab_request[0].request)
+        print(obs)
+        r_request = []
+        for key, value in obs.iteritems():
+            if key != 'csrfmiddlewaretoken':
+                r_request.append(key)
+        all_observations = Observation.objects.filter(id__in = r_request)
+        requested_observations = {}
+        for obs in all_observations:
+            if requested_observations.has_key(obs.category.name):
+                requested_observations[obs.category.name][obs.id] = obs
+            else:
+                requested_observations[obs.category.name] = {obs.id: obs}
+        context['lab_request'] = requested_observations
+        context['lab_request_id'] = lab_request[0].id
     if len(diagnosis) != 0:
         context['diagnosis'] = diagnosis[0]
 

@@ -58,6 +58,38 @@
     </li>
   </ul>
   {% endif %}
+
+    {% if lab_request %}
+  <ul class="list-group">
+    <li class="list-group-item list-group-item">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+	  Patient Lab Investigation
+	</div>
+      </div>      
+      <b>Requested Observations</b><br />
+      {% for category, observations in lab_request.iteritems %}
+      <i>{{ category }}</i>
+      <ul>
+	{% for key, observation in observations.iteritems %}
+	<li>{{ observation.name }}</li>
+	{% endfor %}
+      </ul>
+      {% endfor %}
+      
+      {% if not radio_report %} {# hide option to edit once the report has been submitted#}
+      <div class="text-right">
+	<a href="#">
+	  <span title="Help" class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+	</a> &nbsp;
+	<a href="{% url 'laboratory:edit_lab_request' lab_request_id %}">
+	  <span title="Edit" class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	</a>
+      </div>
+      {% endif %}
+    </li>    
+  </ul>
+  {% endif %}
   
   {% if radio_investigation %}
   <ul class="list-group">
@@ -163,7 +195,7 @@
   {% if not exam %}
   <li class="list-group-item"><a href="{% url 'encounter:create_patient_encounter_exam' encounter.id %}">Examination</a></li>
   {% endif %}
-  {% if not lab_investigation %}
+  {% if not lab_request %}
   <li class="list-group-item"><a href="{% url 'laboratory:create_lab_request' encounter.id %}">Lab Investigation</a></li>
   {% endif %}
   {% if not radio_investigation %}
