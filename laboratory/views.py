@@ -66,29 +66,28 @@ def create_lab_request(request, encounter_id):
 
 def edit_lab_request(request, request_id):
     form_title = "Edit Lab Report"
-    
-    report = PatientRadioReport.objects.get(pk = report_id)
-    radio_request = report.request
-    encounter = radio_request.encounter
-    if request.method == 'POST':
-        requests = []
-        for key, value in request.POST.iteritems():
-            if key != 'csrfmiddlewaretoken':
-                requests.append(int(key)) 
+    labRequest = PatientLabRequest.objects.get(pk = request_id)
+    encounter = labRequest.encounter
+    if request.method == 'POST':        
+        requests = requests = json.dumps(request.POST)
         labRequest.request = requests        
         labRequest.requestor = request.user
         labRequest.save(update_fields=['request', 'requestor'])
-        return HttpResponseRedirect(reverse('laboratory:view_patient_lab_requests', args=(report.request.encounter.id,)))
+        return HttpResponseRedirect(reverse('encounter:view_patient_encounter', args=(labRequest.encounter.id,)))
     else:
-        observations = Observation.objects.filter(active__exact = 1)
+        observations = Observation.objects.filter(active__exact = 1)        
+        requests = json.loads(labRequest.request)
+        checked = []
+        for key, value in requests.iteritems():
+            if key != 'csrfmiddlewaretoken':
+                checked.append(int(key))
         form = {}
         for observation in observations:
             if form.has_key(observation.category.name):
                 form[observation.category.name][observation.id] = observation.name
             else:
-                form[observation.category.name] = {observation.id: observation.name}
-            print(form)
-    return render(request, 'laboratory/edit_patient_lab_report.html', {'form':form, 'edit':1, 'form_title':form_title})
+                form[observation.category.name] = {observation.id: observation.name}            
+    return render(request, 'laboratory/edit_lab_request.html', {'form':form, 'edit':1, 'checked':checked, 'form_title':form_title})
 
 
 def edit_lab_report(request, history_id):
