@@ -92,3 +92,11 @@ table td {
     width: 98%;
     padding:3px;
 }
+
+.lab-table {
+    width:100%;
+}
+
+.lab-table-td{
+    width:50%;
+}

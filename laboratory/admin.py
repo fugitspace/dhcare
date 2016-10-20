@@ -7,8 +7,8 @@ class DiagnosticServiceSectionAdmin(admin.ModelAdmin):
     list_display = ['name', 'code']
 
 class ObservationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'code', 'category', 'group', 'unit', 'maximum', 'minimum']
-    list_filter = ['category', 'group']
+    list_display = ['name', 'code', 'category', 'group', 'unit', 'maximum', 'minimum', 'active']
+    list_filter = ['category', 'group', 'active']
     search_fields = ['name', 'code', 'category', 'group']
 
 class ObservationGroupAdmin(admin.ModelAdmin):

@@ -4,7 +4,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from encounter.models import Encounter
-from staff.models import Staff
+from radiology.models import RequestStatus
+
+
 # Create your models here.
 class DiagnosticServiceSection(models.Model):
     '''Diagnostic Service Station according to FHIR like dermatology, 
@@ -31,6 +33,7 @@ class Observation(models.Model):
     category = models.ForeignKey(DiagnosticServiceSection)
     group = models.ForeignKey(ObservationGroup, blank=True, null=True)    
     unit = models.CharField("Units", max_length=100, blank=True)
+    active = models.BooleanField("Active", default=True)
     reference_value = models.CharField(max_length = 200, blank=True, null=True)
     maximum = models.CharField("Maximum Value", max_length=100, blank=True)
     minimum = models.CharField("Minimum Value", max_length=100, blank=True)
@@ -41,13 +44,14 @@ class PatientLabRequest(models.Model):
     requestor = models.ForeignKey(User, null=True, blank=True)
     request = models.CharField(null=True, blank=True, max_length=1000)
     request_notes = models.TextField("Notes", blank=True, null=True)
-    request_time = models.DateTimeField(auto_now = True)    
+    request_time = models.DateTimeField(auto_now = True)
+    request_status = models.ForeignKey(RequestStatus)
     date_created = models.DateTimeField(auto_now_add = True)
     last_modified = models.DateTimeField(auto_now = True)
 
     
 class PatientLabReport(models.Model):
-    reporter = models.ForeignKey(Staff, null=True, blank=True)
+    reporter = models.ForeignKey(User, null=True, blank=True)
     report = models.TextField(null=True, blank=True)
     report_time = models.DateTimeField(auto_now=True)    
     report_notes = models.TextField("Notes", blank=True, null=True)    

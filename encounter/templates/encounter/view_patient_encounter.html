@@ -164,7 +164,7 @@
   <li class="list-group-item"><a href="{% url 'encounter:create_patient_encounter_exam' encounter.id %}">Examination</a></li>
   {% endif %}
   {% if not lab_investigation %}
-  <li class="list-group-item"><a href="{#% url 'patient:create_patient_encounter_investigation' encounter.id %#}">Lab Investigation</a></li>
+  <li class="list-group-item"><a href="{% url 'laboratory:create_lab_request' encounter.id %}">Lab Investigation</a></li>
   {% endif %}
   {% if not radio_investigation %}
   <li class="list-group-item"><a href="{% url 'radiology:create_radiology_request' encounter.id %}">Radiology Investigation</a></li>
