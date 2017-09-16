@@ -5,7 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from laboratory.models import PatientLabRequest, PatientLabReport, Observation
-from radiology.models import RequestStatus
+from radiology.models import RequestStatus, PatientRadioRequest, PatientRadioReport
+from radiology.forms import PatientRadioReportForm, PatientRadioRequestForm
 #from laboratory.forms import PatientLabRequestForm, PatientLabReportForm
 from encounter.models import Encounter
 # Create your views here.
